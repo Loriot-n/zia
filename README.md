@@ -10,3 +10,8 @@
  - [nginx](https://github.com/nginx/nginx)
  - [nginx doc](http://nginx.org/en/docs/dev/development_guide.html)
  - [nginx architecture](http://www.aosabook.org/en/nginx.html)
+
+
+#### UML :
+
+![UML](https://i.imgur.com/x1g638X.png)
