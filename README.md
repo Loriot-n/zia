@@ -14,4 +14,57 @@
 
 #### UML :
 
-![UML](https://i.imgur.com/x1g638X.png)
+![UML](https://i.imgur.com/x1g638X.png)Class Config
+	-> Construct from File
+
+Class WorkerManager
+	-> Construct from Config
+
+Class Worker
+	-> Spawn new process
+
+	
+	o> init() // Read REQ and build HttpRequest
+	o> process() // Configure ModuleManager
+	o> send() // Write raw_resp to socket
+	o> close() // Close socket and kill process
+
+
+Class ModuleManager
+	-> Read folder module
+
+	x> moduleList[]
+
+	/*
+	** add module to list
+	** set priority
+	*/
+	o> load(string(moduleName))
+
+	o> process(&Duplex) // Execute all Module
+
+
+Class Module extend class zia::api::Module
+	-> Construct from Config
+
+	x> const uint priority {get}
+
+	o> exec(&Duplex) // Run module
+
+
+Class ResponseModule extend Module
+	-> Construct Response
+
+	x> priority = 0
+
+
+Class Request extend struct HttpRequest (http.h)
+	->
+
+
+Class Response extend struct HttpResponse (http.h)
+	->
+
+
+Class Duplex extend struct HttpDuplex (http.h)
+	->
