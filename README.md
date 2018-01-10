@@ -1,9 +1,9 @@
-## Zia - httpd ##
+# Zia - httpd ##
 ### Epitech final 3rd year project ###
 
 ----------
 
-#### Liens : 
+#### Liens :
 
  - [Trello](https://trello.com/b/iQEWPftq/zia-httpd)
  - [Sujet](https://intra.epitech.eu/module/2017/B-PAV-530/LYN-5-1/acti-255972/project/file/zia.pdf)
@@ -14,16 +14,23 @@
 
 #### UML :
 
-![UML](https://i.imgur.com/x1g638X.png)Class Config
+![UML](https://i.imgur.com/x1g638X.png)
+
+Class Config
 	-> Construct from File
 
 Class WorkerManager
-	-> Construct from Config
+	->
+
+	o> init() // Instanciate Config.
+	o> reload()
+	o> run()
+	o> set(key, value) // Overide config value (ie. from argv)
 
 Class Worker
 	-> Spawn new process
 
-	
+
 	o> init() // Read REQ and build HttpRequest
 	o> process() // Configure ModuleManager
 	o> send() // Write raw_resp to socket
