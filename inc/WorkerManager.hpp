@@ -2,10 +2,19 @@
 
 #include <iostream>
 #include "Config.hpp"
+#include "api/conf.hpp"
 
-class WorkerManager 
+namespace zia 
 {
-    public:
-        WorkerManager(Config config);
-        void process();
-};
+    class WorkerManager 
+    {
+        private:
+            Config config;
+        public:
+            WorkerManager();
+            void init();
+            void reload();
+            void set(std::string const &, api::ConfV);
+            void run();
+    };
+}

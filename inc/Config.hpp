@@ -5,6 +5,6 @@
 class Config 
 {
     public:
-        Config(std::string const &file);
+        Config(std::string const &);
         ~Config();
 };

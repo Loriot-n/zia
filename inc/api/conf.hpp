@@ -10,11 +10,12 @@ namespace zia::api {
     using ConfObject = std::map<std::string, ConfValue>;
     using ConfArray = std::vector<ConfValue>;
 
+    using ConfV = std::variant<std::monostate, ConfObject, ConfArray, std::string, long long, double, bool>;
     /**
     * Represents a configuration value.
     */
     struct ConfValue {
-        std::variant<std::monostate, ConfObject, ConfArray, std::string, long long, double, bool> v;
+        ConfV v;
     };
 
     /**
