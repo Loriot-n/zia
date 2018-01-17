@@ -48,7 +48,7 @@ Class ModuleManager
 	*/
 	o> load(string(moduleName))
 
-	o> process(&Duplex) // Execute all Module
+	o> process(&HttpDuplex) // Execute all Module
 
 
 Class Module extend class zia::api::Module
