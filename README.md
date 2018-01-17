@@ -56,7 +56,7 @@ Class Module extend class zia::api::Module
 
 	x> const uint priority {get}
 
-	o> exec(&Duplex) // Run module
+	o> exec(&HttpDuplex) // Run module
 
 
 Class ResponseModule extend Module
