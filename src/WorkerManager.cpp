@@ -1,8 +1,25 @@
 #include "WorkerManager.hpp"
 
-using zia;
+using zia::api::ConfValue;
 
-void WorkerManager::set(std::string const &, api::ConfV v)
+namespace zia
 {
-    ConfValue confV(v);
+    WorkerManager::WorkerManager() : config("./config.json")
+    {
+    }
+
+    void WorkerManager::set(std::string const &, api::ConfV v)
+    {
+        ConfValue confV(v);
+    }
+    
+    void WorkerManager::init()
+    {
+    }
+
+        
+    void WorkerManager::run()
+    {
+        
+    }
 }

@@ -2,9 +2,12 @@
 
 #include <iostream>
 
-class Config 
+namespace zia
 {
-    public:
-        Config(std::string const &);
-        ~Config();
-};
+    class Config 
+    {
+        public:
+            Config(std::string const &);
+            ~Config();
+    };
+}

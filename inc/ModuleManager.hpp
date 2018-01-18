@@ -5,11 +5,14 @@
 
 using  zia::api::HttpDuplex;
 
-class ModuleManager
+namespace zia
 {
-    public:
-        ModuleManager();
-        ~ModuleManager();
-        void load(const std::string&);
-        void process(const HttpDuplex&);
-};
+    class ModuleManager
+    {
+        public:
+            ModuleManager();
+            ~ModuleManager();
+            void load(const std::string&);
+            void process(const HttpDuplex&);
+    };
+}

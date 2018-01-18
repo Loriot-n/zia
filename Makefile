@@ -16,7 +16,10 @@ else
 	CXXFLAGS+= -Werror 
 endif
 
-SRCS	= 	src/Worker.cpp \
+SRCS	= 	src/main.cpp \
+	src/Main.cpp \
+	src/WorkerManager.cpp \
+	src/Worker.cpp \
 	src/Config.cpp \
 	src/ModuleManager.cpp \
 

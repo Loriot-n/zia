@@ -1,6 +1,15 @@
 #include "Config.hpp"
 
-Config::Config(std::string const &file)
+namespace zia
 {
+    Config::Config(std::string const &file)
+    {
 
+    }
+    
+    Config::~Config()
+    {
+
+    }
 }
+

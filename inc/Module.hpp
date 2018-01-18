@@ -3,9 +3,12 @@
 #include <iostream>
 #include "api/module.hpp"
 
-class Module : zia::api::Module
+namespace zia 
 {
-    public:
-        Module();
-        ~Module();
-};
+    class Module : zia::api::Module
+    {
+        public:
+            Module();
+            ~Module();
+    };
+}

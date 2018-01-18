@@ -1,23 +1,14 @@
-#include "WorkerManager.hpp"
+#include "Main.hpp"
 
-using zia::WorkerManager;
-int main(int ac, char **av)
+int main(int argc, char **argv)
 {
-    try
-    {
-        WorkerManager *workerManager =  new WorkerManager();
-        //workerManager.reload();
-        workerManager->init();
-        workerManager->set(std::string("port") , (long long) 5);
-        workerManager->run();
+    int i = -1;
+    std::string *av = new std::string[argc];
     
-        //Signaux KILL,..
-        delete workerManager;
-    }
-    catch(std::exception e)
+    while (++i < argc)
     {
-        std::cerr << e.what() << std::endl;
+        av[i] = std::string(argv[i]);
     }
-    
-    return (0);
+
+    return Main::main(argc, av);
 }

@@ -3,15 +3,18 @@
 #include <iostream>
 #include "ModuleManager.hpp"
 
-class Worker
+namespace zia
 {
-    private:
-        ModuleManager moduleManager;
-    public:
-        Worker();
-        ~Worker();
-        void init();
-        void process();
-        void send();
-        void close();
-};
+    class Worker
+    {
+        private:
+            ModuleManager moduleManager;
+        public:
+            Worker();
+            ~Worker();
+            void init();
+            void process();
+            void send();
+            void close();
+    };
+}

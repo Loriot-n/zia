@@ -15,6 +15,7 @@ namespace zia::api {
     * Represents a configuration value.
     */
     struct ConfValue {
+        ConfValue(ConfV v) : v(v) {};
         ConfV v;
     };
 
