@@ -17,7 +17,6 @@ namespace zia
 
     void Config::load()
     {
-
       try
 	{
 	  bpt::ptree root;
@@ -26,6 +25,8 @@ namespace zia
 	  add<long long>("oui", root);
 	  std::cout << get<long long>("oui") << std::endl;
 	  add<api::ConfArray>("non", root);
+	  for (auto const &e : get<api::ConfArray>("non"))
+	    std::cout << std::get<long long>(e.v) << std::endl;
 	}
       catch (std::runtime_error const &e)
 	{
