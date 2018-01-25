@@ -1,4 +1,4 @@
-.SILENT:
+#.SILENT:
 
 CC	= g++
 
@@ -6,14 +6,14 @@ DEBUG	?= 0
 
 RM	= rm -rf
 
-LDFLAGS	+= 
+LDFLAGS	+=
 
-CXXFLAGS += -W -Wall -Iinc -std=c++17
+CXXFLAGS += -W -Wall -Iinc -std=c++17 -Iinc/api
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS+= -DDEBUG -g3
 else
-	CXXFLAGS+= -Werror 
+	CXXFLAGS+= #-Werror
 endif
 
 SRCS	= 	src/main.cpp \
@@ -42,7 +42,7 @@ fclean: clean ## Clean binary and .o
 clean_comment: ## Clean all comment //
 	find -type f -name "*.cpp" | xargs sed -i 's://.*28198::g'
 
-help: 
+help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 debug: fclean ## Compile to debug mode
