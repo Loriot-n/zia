@@ -1,6 +1,5 @@
-#include <fstream>
-#include "Config.hpp"
 #include <boost/property_tree/json_parser.hpp>
+#include "Config.hpp"
 
 namespace zia
 {

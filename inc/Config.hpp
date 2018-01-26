@@ -44,8 +44,7 @@ namespace zia
     {
       api::ConfArray arr;
       for (auto const &elem : pt.get_child(name))
-	arr.push_back(api::ConfValue(elem.second.get<long long>("")));
+	arr.emplace_back(elem.second.get<long long>(""));
       conf.emplace(std::make_pair(name, arr));
     }
-
 }
