@@ -1,12 +1,13 @@
 #pragma once
 
 #include <iostream>
+#include "api/Net.hpp"
+#include "api/Conf.hpp"
 #include "Config.hpp"
-#include "api/conf.hpp"
 
 namespace zia 
 {
-    class WorkerManager 
+    class WorkerManager : public api::Net
     {
         private:
             Config config;
