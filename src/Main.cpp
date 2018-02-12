@@ -16,7 +16,7 @@ int Main::main(const int ac, const std::string *av)
         //Signaux KILL,..
         delete workerManager;
     }
-    catch(std::exception e)
+    catch(std::exception & e)
     {
         std::cerr << e.what() << std::endl;
     }
