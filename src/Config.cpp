@@ -47,8 +47,14 @@ namespace zia
       std::string errs;
       std::ifstream file(filename);
 
-      bool ok = Json::parseFromStream(builder, file, &root, &errs);
-      conf = getObjectFromJson(root);
+      if (Json::parseFromStream(builder, file, &root, &errs))
+	{
+	  conf = getObjectFromJson(root);
+	}
+      else
+	{
+	  throw std::runtime_error(errs);
+	}
     }
 
     api::ConfObject const &Config::getConf() const
