@@ -39,7 +39,7 @@ namespace zia
 	  func(getArrayFromJson(value));
 	  break;
 	default:
-	  std::cerr << "oups" << std::endl;
+	  throw std::runtime_error("unknown type in config file");
 	}
     }
 

@@ -18,7 +18,7 @@ namespace zia
 	  addToContainer(value,
 			 [&array](auto const &castedValue)
 			 {
-			   array.push_back(api::ConfV {castedValue});
+			   array.emplace_back(castedValue);
 			 });
 	}
       return array;
