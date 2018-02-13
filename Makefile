@@ -6,14 +6,14 @@ DEBUG	?= 0
 
 RM	= rm -rf
 
-LDFLAGS	+=
+LDFLAGS	+= `pkg-config --libs jsoncpp`
 
 CXXFLAGS += -W -Wall -Iinc -std=c++17 -Iinc/api
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS+= -DDEBUG -g3
 else
-	CXXFLAGS+= #-Werror
+	CXXFLAGS+= -g3#-Werror
 endif
 
 SRCS	= 	src/main.cpp \

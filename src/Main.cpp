@@ -10,6 +10,12 @@ int Main::main(const int ac, const std::string *av)
     try
     {
       zia::Config d("oui.json");
+
+      zia::api::ConfObject const &object = std::get<zia::api::ConfObject>(d.getConf().at("lel").v);
+      long long xd = std::get<long long>(object.at("euh").v);
+      std::string const &prout = std::get<std::string>(object.at("ouais").v);
+      std::cout << xd << std::endl;
+      std::cout << prout << std::endl;
       return 0;
         WorkerManager *workerManager =  new WorkerManager();
         //workerManager.reload();

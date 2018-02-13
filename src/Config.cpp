@@ -1,4 +1,4 @@
-#include <boost/property_tree/json_parser.hpp>
+#include <fstream>
 #include "Config.hpp"
 
 namespace zia
@@ -9,28 +9,50 @@ namespace zia
       load();
     }
 
-    Config::~Config()
+    api::ConfArray Config::getArrayFromJson(Json::Value const &json) const
     {
+      api::ConfArray array;
 
+      for (Json::Value value : json)
+	{
+	  addToContainer(value,
+			 [&array](auto const &castedValue)
+			 {
+			   array.push_back(api::ConfV {castedValue});
+			 });
+	}
+      return array;
+    }
+
+    api::ConfObject Config::getObjectFromJson(Json::Value const &json) const
+    {
+      api::ConfObject object;
+
+      for (std::string const &name : json.getMemberNames())
+	{
+	  Json::Value value = json[name];
+	  addToContainer(value,
+			 [&object, &name](auto const &castedValue)
+			 {
+			   object.emplace(std::make_pair(name, castedValue));
+			 });
+	}
+      return object;
     }
 
     void Config::load()
     {
-      try
-	{
-	  bpt::ptree root;
-	  bpt::read_json(filename, root);
+      Json::Value root;
+      Json::CharReaderBuilder builder;
+      std::string errs;
+      std::ifstream file(filename);
 
-	  add<long long>("oui", root);
-	  std::cout << get<long long>("oui") << std::endl;
-	  add<api::ConfArray>("non", root);
-	  for (auto const &e : get<api::ConfArray>("non"))
-	    std::cout << std::get<long long>(e.v) << std::endl;
-	}
-      catch (std::runtime_error const &e)
-	{
-	  std::cerr << e.what() << std::endl;
-	}
+      bool ok = Json::parseFromStream(builder, file, &root, &errs);
+      conf = getObjectFromJson(root);
+    }
+
+    api::ConfObject const &Config::getConf() const
+    {
+      return conf;
     }
 }
-
