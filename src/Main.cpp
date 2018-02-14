@@ -20,7 +20,7 @@ int Main::main(const int ac, const std::string *av)
 
         zia::SharedLib sharedLib("./response.so");
 
-        std::cout << sharedLib.load()->getPriority();
+        std::cout << sharedLib.load() << std::endl;;
     }
     catch(std::exception & e)
     {
