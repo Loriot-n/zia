@@ -22,7 +22,7 @@ namespace zia {
 			return false;
 
 		int on = 1;
-		if (setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, (const char *)&on, sizeof(on)) == -1)
+		if (setsockopt(_sock, SOL_SOCKET, SO_REUSEADDR, (const char *) &on, sizeof(on)) == -1)
 			return false;
 		return true;
 	}
@@ -35,7 +35,7 @@ namespace zia {
 		_addr.sin_addr.s_addr = INADDR_ANY;
 		_addr.sin_port = htons(port);
 
-		if (::bind(_sock, (struct sockaddr *)& _addr, sizeof(_addr)) == -1)
+		if (::bind(_sock, (struct sockaddr *) &_addr, sizeof(_addr)) == -1)
 			return false;
 		return true;
 	}
@@ -63,14 +63,14 @@ namespace zia {
 
 	bool Socket::send(const api::Net::Raw &raw) const {
 		
-		const char *s = (const char *)raw.data();
+		const char *s = (const char *) raw.data();
 
 		int ret = ::send(_sock, s, raw.size(), MSG_NOSIGNAL);
 		return (ret == -1 ? false : true);
 	}
 
 	int Socket::recv(api::Net::Raw &) const {
-		
+
 	}
 
 #ifdef _WIN32
