@@ -14,13 +14,18 @@ namespace zia
         ConfValue confV(v);
     }
 
-    void WorkerManager::init()
+    bool WorkerManager::run(Callback cb)
     {
+        return (true);
     }
 
-
-    void WorkerManager::run()
+    bool WorkerManager::send(ImplSocket* sock, const api::Net::Raw& resp)
     {
+        return (true);
+    }
 
+    bool WorkerManager::stop()
+    {
+        return (true);
     }
 }
