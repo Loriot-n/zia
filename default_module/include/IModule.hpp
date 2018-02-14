@@ -6,8 +6,8 @@ class IModule
 {
     public:
         IModule(int priority): priority(priority) {};
-        virtual exec(const zia::api::HttpDuplex&);
-        int getPriority() const;
+        virtual void exec(const zia::api::HttpDuplex&);
+        int getPriority() const {return this->priority;};
     private:
         unsigned int priority;
 };

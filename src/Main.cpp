@@ -1,5 +1,6 @@
 #include "Main.hpp"
 #include "WorkerManager.hpp"
+#include "SharedLib.hpp"
 
 using zia::WorkerManager;
 
@@ -7,6 +8,7 @@ int Main::main(const int ac, const std::string *av)
 {
     try
     {
+        /*
         WorkerManager *workerManager =  new WorkerManager();
         //workerManager.reload();
         workerManager->init();
@@ -14,7 +16,11 @@ int Main::main(const int ac, const std::string *av)
         workerManager->run();
     
         //Signaux KILL,..
-        delete workerManager;
+        delete workerManager;*/
+
+        zia::SharedLib sharedLib("./response.so");
+
+        std::cout << sharedLib.load()->getPriority();
     }
     catch(std::exception & e)
     {
