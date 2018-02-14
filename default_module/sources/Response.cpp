@@ -1,10 +1,13 @@
 #include <iostream>
+#include "DefaultModule.hpp"
 
 extern "C" 
 {
-    void* load()
+    DefaultModule* load()
     {
         std::cout << "hello" << std::endl;
-        return nullptr; //(void*) new DefaultModule();
+        // return nullptr; //(void*) new DefaultModule();
+        return (new DefaultModule);
+
     }
 }

@@ -14,9 +14,9 @@ void DefaultModule::exec(const zia::api::HttpDuplex&)
 
 extern "C" 
 {
-    void* load()
+    DefaultModule* exec()
     {
         std::cout << "hello" << std::endl;
-        return nullptr; //(void*) new DefaultModule();
+        return new DefaultModule();
     }
 }

@@ -6,9 +6,9 @@ DEBUG	?= 0
 
 RM	= rm -rf
 
-LDFLAGS	+= -shared
+LDFLAGS	+= -shared -rdynamic
 
-CXXFLAGS += -W -Wall -Iinclude -fPIC -std=c++17
+CXXFLAGS += -W -Wall -Iinclude -fPIC -c -std=c++17
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS+= -DDEBUG -g3
