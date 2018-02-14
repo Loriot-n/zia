@@ -1,6 +1,7 @@
 #include "Main.hpp"
 #include "WorkerManager.hpp"
-#include "SharedLib.hpp"
+#include "ModuleManager.hpp"
+
 
 using zia::WorkerManager;
 
@@ -18,9 +19,7 @@ int Main::main(const int ac, const std::string *av)
         //Signaux KILL,..
         delete workerManager;*/
 
-        zia::SharedLib sharedLib("./response.so");
-
-        std::cout << sharedLib.load() << std::endl;;
+        zia::ModuleManager *md = new zia::ModuleManager("./responses");
     }
     catch(std::exception & e)
     {

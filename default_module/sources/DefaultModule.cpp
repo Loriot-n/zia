@@ -12,11 +12,10 @@ void DefaultModule::exec(const zia::api::HttpDuplex&)
     
 }
 
-extern "C" 
+extern "C"
 {
-    DefaultModule* exec()
+    IModule* create()
     {
-        std::cout << "hello" << std::endl;
         return new DefaultModule();
     }
 }

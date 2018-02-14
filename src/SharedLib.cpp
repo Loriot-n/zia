@@ -14,8 +14,8 @@ namespace zia
 
     IModule *SharedLib::load()
     {
-        ((Loader)dlsym(this->sharedLib, "exec"))();
-        return nullptr;
+        
+        return ((Loader)dlsym(this->sharedLib, "create"))();
     }
 
     SharedLib::~SharedLib()

@@ -1,5 +1,3 @@
-.SILENT:
-
 CC	= g++
 
 DEBUG	?= 0
@@ -33,17 +31,6 @@ clean: ## Clean .o
 fclean: clean ## Clean binary and .o
 	$(RM) $(NAME)
 	$(RM) debug
-
-clean_comment: ## Clean all comment //
-	find -type f -name "*.cpp" | xargs sed -i 's://.*3103::g'
-
-help: 
-	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
-
-debug: fclean ## Compile to debug mode
-	make re DEBUG=1
-	mkdir debug
-	mv $(NAME) debug/
 
 re: fclean all ## Recompile
 
