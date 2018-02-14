@@ -6,7 +6,6 @@ namespace zia
 {
     WorkerManager::WorkerManager() : config("./config.json")
     {
-		std::to_string();
     }
 
     void WorkerManager::set(std::string const &, api::ConfV v)
@@ -16,11 +15,14 @@ namespace zia
 
     bool WorkerManager::run(Callback cb)
     {
+        (void) cb;
         return (true);
     }
 
     bool WorkerManager::send(ImplSocket* sock, const api::Net::Raw& resp)
     {
+        (void) sock;
+        (void) resp;
         return (true);
     }
 
