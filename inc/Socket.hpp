@@ -7,6 +7,7 @@
 # include <sys/types.h>
 # include <arpa/inet.h>
 # include <unistd.h>
+# include <sys/epoll.h>
 #endif
 
 #include "api/Net.hpp"
@@ -41,10 +42,18 @@ namespace zia {
 			*/
 			bool listen() const;
 
+
+			/*
+			* Initialize epoll
+			*/
+			bool epoll_create();
+
+			int epoll_ctl(Socket &s);
+
 			/* 
 			* Accept new connection 
 			*/
-			bool accept(Socket &) const;
+			bool accept(Socket &);
 
 			/* 
 			* Check validity of socket
@@ -63,12 +72,15 @@ namespace zia {
 			*/
 			int recv(api::Net::Raw &) const;
 
+			int getSockFd() const { return _sock; }
+
 		protected:
 			int winStartup();
 
 			int _sock;
 			sockaddr_in _addr;
 			uint64_t _sizeMax;
+			int _epollFd;
 
 	};
 }

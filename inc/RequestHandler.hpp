@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <array>
 
 #ifdef _WIN32
 #	include <sys/epoll.h>
@@ -26,6 +27,7 @@ namespace zia {
 			bool run(Callback cb);
 			bool send(api::ImplSocket *, const api::Net::Raw &resp);
 			bool stop();
+			void waitLoop();
 
 		private:
 			ServerSocket _serverSocket;

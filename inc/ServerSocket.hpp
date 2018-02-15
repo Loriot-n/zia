@@ -5,7 +5,7 @@
 
 namespace zia {
 
-	class ServerSocket : private Socket {
+	class ServerSocket : public Socket {
 
 		public:
 			ServerSocket(api::Conf &);

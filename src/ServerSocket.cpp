@@ -25,6 +25,12 @@ namespace zia {
 
 		if (!Socket::listen())
 			throw SocketException("Could not listen socket.");
+		
+		if (!Socket::epoll_create())
+			throw SocketException("Could not create epoll_fd.");
+
+		if (Socket::epoll_ctl(*this) < 0)
+			throw SocketException("Could not set epoll on main server socket.");
 	}
 
 	const Socket& ServerSocket::operator << (const api::Net::Raw &s) const {
@@ -45,6 +51,9 @@ namespace zia {
 	void ServerSocket::accept(ServerSocket &s) {
 		if (!Socket::accept(s))
 			throw SocketException("Could not accept Socket.");
+
+		if (Socket::epoll_ctl(s))
+			throw SocketException("Could not set epoll on new client.");
 	}
 
 }

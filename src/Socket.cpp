@@ -60,12 +60,31 @@ namespace zia {
 		return true;
 	}
 
-	bool Socket::accept(Socket &s) const {
+	bool Socket::epoll_create() {
+		if ((_epollFd = ::epoll_create(1)) < 0)
+			return false;
+		return true;
+	}
+
+	int Socket::epoll_ctl(Socket &s) {
+
+		struct epoll_event ep;
+		ep.events = EPOLLIN | EPOLLET;
+		ep.data.fd = s._sock;
+
+		int epStatus;
+		if ((epStatus = ::epoll_ctl(_epollFd, EPOLL_CTL_ADD, s._sock, &ep)) < 0)
+			close(s._sock);
+
+		return epStatus;
+	}
+
+	bool Socket::accept(Socket &s) {
 
 		int addr_len = sizeof(_addr);
 		s._sock = ::accept(_sock, (sockaddr *) &_addr, (socklen_t *) &addr_len);
 
-		return (s._sock <= 0 ? false : true);
+		return (s._sock <= 0) ? false : true;
 	}
 
 	bool Socket::isValid() const {
@@ -82,7 +101,7 @@ namespace zia {
 
 		long pageSize = ::sysconf(_SC_PAGESIZE);
 		unsigned char buf[pageSize];
-		bzero(buf, pageSize);
+		::bzero(buf, pageSize);
 		if (req.empty())
 			req.reserve(pageSize);
 
