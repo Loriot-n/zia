@@ -18,10 +18,6 @@
 
 namespace zia {
 
-	struct ImplSocket {
-
-    };
-
 	class Socket {
 
 		public:
