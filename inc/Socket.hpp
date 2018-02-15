@@ -26,12 +26,13 @@ namespace zia {
 
 		public:
 			Socket();
+			Socket(uint64_t sizeMax);
 			virtual ~Socket();
 
 			/**
 			* Call socket, init _sock and setsockopt()
 			*/
-			bool create();
+			bool create(uint64_t sizeMax);
 
 			/** 
 			* fill _addr struct and bind to port
@@ -66,10 +67,12 @@ namespace zia {
 			*/
 			int recv(api::Net::Raw &) const;
 
-		private:
+		protected:
 			int winStartup();
 
 			int _sock;
 			sockaddr_in _addr;
+			uint64_t _sizeMax;
+
 	};
 }

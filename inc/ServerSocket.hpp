@@ -1,15 +1,24 @@
 #pragma once
 
 #include "Socket.hpp"
+#include "api/Conf.hpp"
 
 namespace zia {
 
 	class ServerSocket : private Socket {
 
-		const Socket& operator << (const std::string &) const;
-		const Socket& operator >> (std::string &) const;
+		public:
+			ServerSocket(api::Conf &);
+			ServerSocket() {};
+			~ServerSocket() {};
 
-		void accept(ServerSocket &);
+			const Socket& operator << (const api::Net::Raw &) const;
+			const Socket& operator >> (api::Net::Raw &) const;
 
+			void accept(ServerSocket &);
+
+		protected:
+			long long _port;
+			long long _sizeMax;
 	};
 }
