@@ -29,6 +29,9 @@ namespace zia
 	case Json::ValueType::uintValue:
 	  func(static_cast<long long>(value.asInt()));
 	  break;
+	case Json::ValueType::realValue:
+	  func(value.asDouble());
+	  break;
 	case Json::ValueType::stringValue:
 	  func(value.asString());
 	  break;
@@ -61,11 +64,17 @@ namespace zia
     }
 
     template <class T>
-    void add(std::string const &name, T &&value)
+    void set(std::string const &name, T &&value)
     {
-      conf.emplace(std::make_pair(name, std::forward<T>(value)));
+      using It = api::ConfObject::iterator;
+      std::pair<It, bool> result = conf.emplace(std::make_pair(name, std::forward<T>(value)));
+      if (!result.second)
+	{
+	  conf.at(name) = api::ConfValue(std::forward<T>(value));
+	}
     }
 
     api::ConfObject const &getConf() const;
+    api::ConfObject &getConf();
   };
 }

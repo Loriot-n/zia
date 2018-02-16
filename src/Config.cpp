@@ -61,4 +61,11 @@ namespace zia
     {
       return conf;
     }
+
+    api::ConfObject &Config::getConf()
+    {
+      return conf;
+    }
+
+
 }
