@@ -60,6 +60,12 @@ namespace zia
       return std::get<T>(conf.at(name).v);
     }
 
+    template <class T>
+    void add(std::string const &name, T &&value)
+    {
+      conf.emplace(std::make_pair(name, std::forward<T>(value)));
+    }
+
     api::ConfObject const &getConf() const;
   };
 }
