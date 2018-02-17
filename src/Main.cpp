@@ -10,7 +10,10 @@ int Main::main(const int ac, const std::string *av)
 {
     try
     {
-        zia::ModuleManager *md = new zia::ModuleManager("./modules");
+        zia::ModuleManager md("./modules");
+	md.load("php-cgi");
+	HttpDuplex dup;
+	md.process(dup);
     }
     catch(std::exception & e)
     {

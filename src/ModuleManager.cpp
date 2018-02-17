@@ -44,22 +44,20 @@ namespace zia
 
     void ModuleManager::load(const std::string &name)
     {
-        IModule *module;
-
-        SharedLib *sharedLib = new SharedLib(this->modulesList[name]);
-        module = sharedLib->load();
-        delete sharedLib;
-        this->modules.push_back(module);
+	DynLib &lib = libs.emplace_back(modulesList[name]);
+	lib.load();
+	auto create = lib.resolve<IModule *(*)()>("create");
+        this->modules.emplace_back(create());
     }
 
     void ModuleManager::process(HttpDuplex &duplex)
     {
-        this->modules.sort([](IModule *a, IModule *b) -> bool
+        this->modules.sort([](std::unique_ptr<IModule> const &a, std::unique_ptr<IModule> const &b)
         {
             return a->getPriority() > b->getPriority();
         });
 
-        for(IModule *module : this->modules)
+        for (auto &&module : this->modules)
         {
             module->exec(duplex);
         }
