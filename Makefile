@@ -6,7 +6,7 @@ DEBUG	?= 0
 
 RM	= rm -rf
 
-LDFLAGS	+= 
+LDFLAGS	+=  -ldl
 
 CXXFLAGS += -W -Wall -Iinc -std=c++17
 
@@ -24,6 +24,7 @@ SRCS	= 	src/main.cpp \
 	src/ServerSocket.cpp\
 	src/Config.cpp \
 	src/ModuleManager.cpp \
+	src/SharedLib.cpp \
 
 OBJS	= $(SRCS:.cpp=.o)
 

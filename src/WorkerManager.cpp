@@ -6,6 +6,10 @@ namespace zia
 {
     WorkerManager::WorkerManager() : config("./config.json")
     {
+<<<<<<< HEAD
+=======
+		//std::to_string();
+>>>>>>> 6994785a68fbaf3c16947acafeda9c345624a156
     }
 
     void WorkerManager::set(std::string const &, api::ConfV v)
