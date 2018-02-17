@@ -1,7 +1,7 @@
 #pragma once
 
-#include "conf.h"
-#include "http.h"
+#include "Conf.hpp"
+#include "Http.hpp"
 
 namespace zia::api {
     /**
