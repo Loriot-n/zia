@@ -6,7 +6,7 @@ DEBUG	?= 0
 
 RM	= rm -rf
 
-LDFLAGS	+= 
+LDFLAGS	+= -lpthread
 
 CXXFLAGS += -W -Wall -Iinc -std=c++17
 
@@ -18,10 +18,14 @@ endif
 
 SRCS	= 	src/main.cpp \
 	src/Main.cpp \
-	src/WorkerManager.cpp \
 	src/Worker.cpp \
 	src/Config.cpp \
 	src/ModuleManager.cpp \
+	src/socket/Handler.cpp \
+	src/socket/Listener.cpp \
+	src/socket/Reactor.cpp \
+	src/socket/Session.cpp \
+	src/socket/Stream.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 

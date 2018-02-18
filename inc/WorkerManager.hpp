@@ -4,7 +4,7 @@
 #include "api/Net.hpp"
 #include "api/Conf.hpp"
 #include "Config.hpp"
-#include "Socket.hpp"
+#include "socket/Socket.hpp"
 
 namespace zia 
 {

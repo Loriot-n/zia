@@ -7,7 +7,6 @@
 # include <sys/types.h>
 # include <arpa/inet.h>
 # include <unistd.h>
-# include <sys/epoll.h>
 #endif
 
 #include "api/Net.hpp"
@@ -71,6 +70,8 @@ namespace zia {
 			* @param Reference to the buffer that will be filled
 			*/
 			int recv(api::Net::Raw &) const;
+
+			bool operator == (const int fd) const;
 
 			int getSockFd() const { return _sock; }
 

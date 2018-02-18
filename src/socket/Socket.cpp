@@ -1,5 +1,4 @@
-#include "Socket.hpp"
-#include <stdio.h>
+#include "socket/Socket.hpp"
 
 namespace zia {
 
@@ -135,6 +134,12 @@ namespace zia {
 		}
 		return totalRead;
 	}
+
+	bool Socket::operator == (const int fd) const {
+
+		return (fd == _sock);
+	}
+
 
 #ifdef _WIN32
 	int Socket::winStartup() {

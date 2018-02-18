@@ -10,7 +10,7 @@
 #include <api/Net.hpp>
 #include <api/Conf.hpp>
 
-#include "ServerSocket.hpp"
+#include "socket/ServerSocket.hpp"
 
 namespace zia {
 
