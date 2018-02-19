@@ -7,7 +7,7 @@
 
 #include "api/Net.hpp"
 #include "Handler.hpp"
-#include "SocketException.hpp"
+#include "exception/SocketException.hpp"
 #ifndef _WIN32
 # include <sys/epoll.h>
 #endif

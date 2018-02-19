@@ -88,19 +88,11 @@ namespace zia {
 
 				} else if (_epev.events & EPOLLIN) {
 					try {
-						api::Net::Raw r;
-						api::NetInfo info;
-						auto listener = std::dynamic_pointer_cast<Listener>(pos->second);
-						if (listener && listener->getHandler() == pos->first) {
-							std::cout << "Listener" << std::endl;
-							listener->acceptNewClient();
+						SockState s = pos->second->handleInput(cb);
+						if (s == SockState::RESUME)
 							resumeSock(pos->second);
-						} else {
-							api::Net::Raw r;
-							api::NetInfo info;
-							cb(r, info);
+						else if (s == SockState::CLOSE)
 							deleteSock(pos->second);
-						}
 					} catch(std::exception& e) {
 						deleteSock(pos->second);
 						throw e;

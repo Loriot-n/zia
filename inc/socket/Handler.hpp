@@ -6,6 +6,11 @@
 
 namespace zia {
 
+	enum class SockState {
+		RESUME,
+		CLOSE
+	};
+
 	class Reactor;
 	class Handler : public std::enable_shared_from_this<Handler> {
 
@@ -14,10 +19,10 @@ namespace zia {
 			virtual ~Handler();
 
 			Reactor 	*reactor() const { return _reactor; }
-			void 	reactor(Reactor *reactor) { _reactor = reactor; }
+			void 		reactor(Reactor *reactor) { _reactor = reactor; }
 
-			virtual int getHandler() const = 0;
-			virtual void handleReq(api::Net::Raw, api::NetInfo) = 0;
+			virtual int  getHandler() const = 0;
+			virtual SockState handleInput(api::Net::Callback) = 0;
 
 		private:
 			Reactor 	*_reactor;

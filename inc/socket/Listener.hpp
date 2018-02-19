@@ -1,8 +1,10 @@
 #pragma once
 
+#include <sys/socket.h>
+#include <arpa/inet.h>
+
 #include "socket/Handler.hpp"
 #include "socket/Reactor.hpp"
-#include "socket/Socket.hpp"
 #include "api/Conf.hpp"
 
 namespace zia {
@@ -33,7 +35,7 @@ namespace zia {
 			void accept(Stream &);
 			void open();
 			int getHandler() const { return _socket; }
-			void handleReq(api::Net::Raw, api::NetInfo) { std::cout << "#1" << std::endl; }
+			SockState handleInput(api::Net::Callback);
 			void acceptNewClient();
 
 

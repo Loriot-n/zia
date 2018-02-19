@@ -60,9 +60,15 @@ namespace zia {
 
 	void Listener::acceptNewClient() {
 
+
+	}
+
+	SockState Listener::handleInput(api::Net::Callback cb) {
+		(void)cb;
 		SessionPtr session(new Session());
 		accept(session->stream());
 		_session->registerSock(session);
+		return SockState::RESUME;
 	}
 
 

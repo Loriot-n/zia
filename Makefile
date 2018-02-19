@@ -25,7 +25,8 @@ SRCS	= 	src/main.cpp \
 	src/socket/Listener.cpp \
 	src/socket/Reactor.cpp \
 	src/socket/Session.cpp \
-	src/socket/Stream.cpp
+	src/socket/Stream.cpp \
+	src/Server.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
