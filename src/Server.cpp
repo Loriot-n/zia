@@ -8,7 +8,7 @@ namespace zia {
 		// TODO: Get conf value
 		(void)c;
 		_port = 4242;
-		_timeout = 3;
+		_timeout = 1;
 		_threadPoolSize = std::thread::hardware_concurrency();
 		_maxEv = 256;
 	}
@@ -22,6 +22,7 @@ namespace zia {
 		(void)r;
 		(void)netInfo;
 		std::cout << "Hello World" << std::endl;
+
 	}
 
 	bool Server::run(Callback cb) {
@@ -61,7 +62,7 @@ namespace zia {
 				}
 			);
 
-		} catch ( const ServerException& e ) {
+		} catch (const ServerException& e) {
 			std::cout << "[Fatal] Error : " << e.what() << "\nExiting." << std::endl;
 			return false;
 		}
@@ -75,6 +76,4 @@ namespace zia {
 	bool Server::stop() {
 		return true;
 	}
-
-
 }

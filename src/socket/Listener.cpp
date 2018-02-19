@@ -56,16 +56,16 @@ namespace zia {
 			throw SocketException("Can't accept connection");
 
 		s.setSock(socket);
+		s.setAddr(clientaddr);
 	}
 
 	void Listener::acceptNewClient() {
-
 
 	}
 
 	SockState Listener::handleInput(api::Net::Callback cb) {
 		(void)cb;
-		SessionPtr session(new Session());
+		SessionPtr session(new Session(_timeout));
 		accept(session->stream());
 		_session->registerSock(session);
 		return SockState::RESUME;

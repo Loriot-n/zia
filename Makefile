@@ -13,7 +13,7 @@ CXXFLAGS += -W -Wall -Iinc -std=c++17
 ifeq ($(DEBUG), 1)
 	CXXFLAGS+= -DDEBUG -g3
 else
-	CXXFLAGS+= -Werror 
+	# CXXFLAGS+= -Werror 
 endif
 
 SRCS	= 	src/main.cpp \
@@ -26,6 +26,7 @@ SRCS	= 	src/main.cpp \
 	src/socket/Reactor.cpp \
 	src/socket/Session.cpp \
 	src/socket/Stream.cpp \
+	src/http/RequestHandler.cpp \
 	src/Server.cpp
 
 OBJS	= $(SRCS:.cpp=.o)

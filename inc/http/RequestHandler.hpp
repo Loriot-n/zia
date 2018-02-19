@@ -13,6 +13,8 @@ namespace zia {
 			RequestHandler();
 			~RequestHandler();
 
+			static void handleRequest(api::Net::Raw r, api::NetInfo);
+
 		private:
 			api::Net::Raw 	_raw;
 			api::NetInfo 	_netInfo;

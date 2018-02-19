@@ -1,5 +1,6 @@
 #include "socket/Reactor.hpp"
 #include "socket/Listener.hpp"
+#include "exception/TransferException.hpp"
 
 #include "assert.h"
 
@@ -93,6 +94,8 @@ namespace zia {
 							resumeSock(pos->second);
 						else if (s == SockState::CLOSE)
 							deleteSock(pos->second);
+					} catch(const TransferException &e) {
+						deleteSock(pos->second);
 					} catch(std::exception& e) {
 						deleteSock(pos->second);
 						throw e;

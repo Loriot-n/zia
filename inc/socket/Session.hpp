@@ -4,7 +4,7 @@
 #include <iostream>
 #include <strings.h>
 #include <string.h>
-#include <sys/socket.h>
+#include <arpa/inet.h>
 
 #include "Handler.hpp"
 #include "Stream.hpp"
@@ -13,21 +13,27 @@
 
 namespace zia {
 
+    struct api::ImplSocket {
+        Stream stream;
+    };
+
     class Session : public Handler {
 
         public:
             ~Session();
-            Session();
+            Session(unsigned int timeout);
 
             Stream& stream() { return _stream; }
 
             int getHandler() const { return _stream.getSock(); }
             SockState handleInput(api::Net::Callback);
-            int recv(api::Net::Raw &req);
+            int getClientInfo(api::NetInfo &netInfo);
+            unsigned int recv(api::Net::Raw &req);
 
         private:
             Stream _stream;
             unsigned int _timeout;
+            zia::api::ImplSocket _implSocket;
     };
 
     typedef std::shared_ptr<Session> SessionPtr;
