@@ -66,6 +66,9 @@ namespace zia
       conf.emplace(std::make_pair(name, std::forward<T>(value)));
     }
 
+    zia::api::ConfObject::iterator find(std::string const &name);
+    void erase(zia::api::ConfObject::iterator it);
+    zia::api::ConfObject::iterator end();
     api::ConfObject const &getConf() const;
   };
 }

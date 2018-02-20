@@ -1,6 +1,7 @@
 #include "Main.hpp"
 #include "WorkerManager.hpp"
 #include "Config.hpp"
+#include "CheckConfig.hpp"
 
 
 using zia::WorkerManager;
@@ -9,13 +10,9 @@ int Main::main(const int ac, const std::string *av)
 {
     try
     {
-      zia::Config d("oui.json");
+      zia::Config d("conf/zia.conf");
 
-      zia::api::ConfObject const &object = std::get<zia::api::ConfObject>(d.getConf().at("lel").v);
-      long long xd = std::get<long long>(object.at("euh").v);
-      std::string const &prout = std::get<std::string>(object.at("ouais").v);
-      std::cout << xd << std::endl;
-      std::cout << prout << std::endl;
+      std:: cout << d.get<long long>("port") << std::endl;
       return 0;
         WorkerManager *workerManager =  new WorkerManager();
         //workerManager.reload();

@@ -61,4 +61,19 @@ namespace zia
     {
       return conf;
     }
+
+    zia::api::ConfObject::iterator Config::find(std::string const &name)
+    {
+      return conf.find(name);
+    }
+
+    void Config::erase(zia::api::ConfObject::iterator it)
+    {
+      conf.erase(it);
+    }
+
+    zia::api::ConfObject::iterator Config::end()
+    {
+      return conf.end();
+    }
 }
