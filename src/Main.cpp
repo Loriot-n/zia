@@ -3,29 +3,34 @@
 #include "Config.hpp"
 #include "CheckConfig.hpp"
 
+#include "ServerSocket.hpp"
 
-using zia::WorkerManager;
+using namespace zia;
 
 int Main::main(const int ac, const std::string *av)
 {
-    try
-    {
-      zia::Config d("conf/zia.conf");
 
-      std:: cout << d.get<long long>("port") << std::endl;
-      return 0;
-        WorkerManager *workerManager =  new WorkerManager();
-        //workerManager.reload();
-        workerManager->init();
-        workerManager->set(std::string("port") , (long long) 5);
-        workerManager->run();
+    std::cout << "running..." << std::endl;
 
-        //Signaux KILL,..
-        delete workerManager;
+    try {
+        api::Conf c;
+        // Create the socket
+        ServerSocket server (c);
+        while (true) {
+            ServerSocket new_sock;
+            server.accept (new_sock);
+            try {
+                while (true) {
+                    api::Net::Raw data;
+                    new_sock >> data;
+                    new_sock << data;
+                }
+            } catch (const SocketException& e) {
+                std::cerr << e.what() << std::endl;
+            }
+        }
+    } catch ( SocketException& e ) {
+        std::cout << "Exception was caught:" << e.what() << "\nExiting.\n";
     }
-    catch (std::runtime_error const &e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-    return (0);
+    return 0;
 }

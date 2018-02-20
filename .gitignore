@@ -1,2 +1,11 @@
 *.o
 debug
+
+# Loriot
+.syntastic_cpp_config
+.ycm_extra_conf.py
+compile_commands.json
+src/zia.sublime-workspace
+zia.sublime-project
+zia.sublime-workspace
+
