@@ -6,24 +6,31 @@ DEBUG	?= 0
 
 RM	= rm -rf
 
-LDFLAGS	+= 
+LDFLAGS	+= -lpthread
 
 CXXFLAGS += -W -Wall -Iinc -std=c++17
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS+= -DDEBUG -g3 -Wfatal-errors
 else
-	CXXFLAGS+= -Werror 
+	# CXXFLAGS+= -Werror 
 endif
 
 SRCS	= 	src/main.cpp \
 	src/Main.cpp \
-	src/WorkerManager.cpp \
 	src/Worker.cpp \
 	src/Socket.cpp \
 	src/ServerSocket.cpp\
 	src/Config.cpp \
 	src/ModuleManager.cpp \
+	src/socket/Handler.cpp \
+	src/socket/Listener.cpp \
+	src/socket/Reactor.cpp \
+	src/socket/Session.cpp \
+	src/socket/Stream.cpp \
+	src/http/RequestHandler.cpp \
+	src/http/HttpParser.cpp \
+	src/Server.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 
