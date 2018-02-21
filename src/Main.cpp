@@ -1,30 +1,17 @@
 #include "Main.hpp"
-#include "WorkerManager.hpp"
-#include "SharedLib.hpp"
+#include "Config.hpp"
+#include "CheckConfig.hpp"
 
-using zia::WorkerManager;
+using namespace zia;
+
 
 int Main::main(const int ac, const std::string *av)
 {
-    try
-    {
-        /*
-        WorkerManager *workerManager =  new WorkerManager();
-        //workerManager.reload();
-        workerManager->init();
-        workerManager->set(std::string("port") , (long long) 5);
-        workerManager->run();
-    
-        //Signaux KILL,..
-        delete workerManager;*/
 
-        zia::SharedLib sharedLib("./response.so");
+    (void)ac; (void)av;
 
-        std::cout << sharedLib.load()->getPriority();
-    }
-    catch(std::exception & e)
-    {
-        std::cerr << e.what() << std::endl;
-    }
-    return (0);
+    api::Conf c;
+
+    Server server(c);
+    return (server.run(server.handleRequest));
 }
