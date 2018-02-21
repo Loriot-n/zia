@@ -7,8 +7,6 @@ namespace zia
 {
     class Worker
     {
-        private:
-            ModuleManager moduleManager;
         public:
             Worker();
             ~Worker();
@@ -16,5 +14,8 @@ namespace zia
             void process();
             void send();
             void close();
+
+        private:
+            ModuleManager moduleManager;
     };
 }
