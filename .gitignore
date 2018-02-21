@@ -1,5 +1,8 @@
 *.o
 debug
+*.a
+zia
+zia_test
 
 # Loriot
 .syntastic_cpp_config
@@ -9,3 +12,6 @@ src/zia.sublime-workspace
 zia.sublime-project
 zia.sublime-workspace
 
+# Flora
+.vs/
+*.so

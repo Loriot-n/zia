@@ -1,12 +1,12 @@
 #pragma once
 
 #include "api/Http.hpp"
-
-class IModule
+#include "api/Conf.hpp"
+#include "api/Module.hpp"
+class IModule : public zia::api::Module
 {
     public:
         IModule(int priority): priority(priority) {};
-        virtual void exec(const zia::api::HttpDuplex&);
         int getPriority() const {return this->priority;};
     private:
         unsigned int priority;

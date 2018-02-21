@@ -9,6 +9,13 @@ namespace zia
         this->getModulesList();
     }
 
+    ModuleManager &ModuleManager::getInstance()
+    {
+
+        static ModuleManager instance("./Modules");
+        return instance;
+    }
+
     void ModuleManager::getModulesList()
     {
         this->modulesList.clear();
@@ -34,7 +41,7 @@ namespace zia
                     {
                         std::string name = file.substr(0, file.length() - 3);
                         std::cout << name << std::endl;
-                        this->modulesList[name] = dirName + "/" + file;
+                        this->modulesList[name] = dirName + "/" + name;
                     }
                 }
             }
@@ -63,5 +70,6 @@ namespace zia
         {
             module->exec(duplex);
         }
+        this->modules.clear();
     }
 }

@@ -9,6 +9,8 @@
 #include "IModule.hpp"
 #include "DynLib.hpp"
 
+#include "Config.hpp"
+
 using  zia::api::HttpDuplex;
 
 typedef struct dirent* t_dir;
@@ -18,8 +20,9 @@ namespace zia
     class ModuleManager
     {
         public:
+            static ModuleManager &getInstance();
             ModuleManager(const std::string &);
-            ~ModuleManager() = default;
+
             void load(const std::string&);
             void process(HttpDuplex&);
             void getModulesList();
