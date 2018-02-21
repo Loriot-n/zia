@@ -1,4 +1,5 @@
 #include "Server.hpp"
+#include "http/HttpParser.hpp"
 
 namespace zia {
 
@@ -8,7 +9,7 @@ namespace zia {
 		// TODO: Get conf value
 		(void)c;
 		_port = 4242;
-		_timeout = 1;
+		_timeout = 10;
 		_threadPoolSize = std::thread::hardware_concurrency();
 		_maxEv = 256;
 	}
@@ -19,10 +20,16 @@ namespace zia {
 
 	void Server::handleRequest(Raw r, api::NetInfo netInfo) {
 
-		(void)r;
-		(void)netInfo;
-		std::cout << "Hello World" << std::endl;
+		std::time_t tt = std::chrono::system_clock::to_time_t(netInfo.time);
+		std::cout << ctime(&tt) <<  "Request from " << netInfo.ip.str << ":" << netInfo.port << std::endl;
 
+		HttpParser p(r, netInfo);
+
+		api::HttpDuplex duplex;
+
+		duplex.info = netInfo;
+		duplex.raw_req = r;
+		p.parse(duplex.req);
 	}
 
 	bool Server::run(Callback cb) {

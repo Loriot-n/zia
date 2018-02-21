@@ -27,6 +27,7 @@ SRCS	= 	src/main.cpp \
 	src/socket/Session.cpp \
 	src/socket/Stream.cpp \
 	src/http/RequestHandler.cpp \
+	src/http/HttpParser.cpp \
 	src/Server.cpp
 
 OBJS	= $(SRCS:.cpp=.o)

@@ -13,7 +13,9 @@ namespace zia {
             virtual ~ServerException() throw () {}
 
             virtual const char* what() const throw () {
-            	return (_context + _msg).c_str();
+                std::string msg;
+                msg = _context + _msg;
+                return msg.c_str();
             }
 
         protected:

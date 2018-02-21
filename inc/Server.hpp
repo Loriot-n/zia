@@ -10,10 +10,12 @@
 
 #include "socket/Reactor.hpp"
 #include "socket/Listener.hpp"
+#include "socket/Stream.hpp"
 
 namespace zia {
 
 	class Server : public api::Net {
+
 
 		public:
 

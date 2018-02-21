@@ -6,6 +6,7 @@
 #include <functional>
 #include <string>
 #include <vector>
+#include "socket/Stream.hpp"
 
 namespace zia::api {
     /**
@@ -19,7 +20,9 @@ namespace zia::api {
     /**
     * Struct identifying socket (implementation-defined).
     */
-    struct ImplSocket;
+    struct ImplSocket {
+        Stream stream;
+    };
 
     /**
     * Infos on client.

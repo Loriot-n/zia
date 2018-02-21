@@ -8,12 +8,13 @@
 
 #include "Handler.hpp"
 #include "Stream.hpp"
+#include "Server.hpp"
 
 #include "exception/TransferException.hpp"
 
 namespace zia {
 
-    struct api::ImplSocket {
+    struct ImplSocket : api::ImplSocket {
         Stream stream;
     };
 

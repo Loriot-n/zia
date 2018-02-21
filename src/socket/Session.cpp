@@ -60,27 +60,14 @@ namespace zia {
 		api::Net::Raw r;
 		api::NetInfo  netinfo;
 
-		// Read and fill Raw
-		// Fill NetInfo
-
 		try {
 
-			std::string req;
 			getClientInfo(netinfo);
-			std::cout << "Request from " << netinfo.ip.str << ":" << netinfo.port << std::endl;
-			unsigned int len = this->recv(r);
-			std::cout << "End of req. size : " << len << std::endl;
+			this->recv(r);
 
-			for (auto it : r) {
-				std::cout << (char)it;
-			}
-			std::cout << std::endl;
+		} catch (TransferException &e) {
 
-			// std::cout << std::string(&r[0], len) << std::endl;
-			// _stream.send(req.c_str(), req.length());
-		} catch (const TransferException &e) {
-			
-			// FIX THIS
+			// FIXME: Doesnt catch exception
 			std::cout << e.what() << std::endl;
 			return SockState::CLOSE;
 		} catch (const std::exception &e) {
