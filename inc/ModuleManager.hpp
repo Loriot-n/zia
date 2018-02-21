@@ -7,6 +7,7 @@
 #include "SharedLib.hpp"
 #include <list>
 #include "IModule.hpp"
+#include "Config.hpp"
 using  zia::api::HttpDuplex;
 
 typedef struct dirent* t_dir;
@@ -16,10 +17,10 @@ namespace zia
     class ModuleManager
     {
         public:
+            static ModuleManager &getInstance();
             ModuleManager(const std::string &);
-            ~ModuleManager();
             void load(const std::string&);
-            void process(const HttpDuplex&);
+            void process(HttpDuplex&);
             void getModulesList();
         private:
             std::list<IModule*> modules;

@@ -1,10 +1,12 @@
 #pragma once
 #include <iostream>
 #include "IModule.hpp"
+#include "api/Conf.hpp"
 
 class DefaultModule : public IModule
 {
     public:
         DefaultModule();
-        void exec(const zia::api::HttpDuplex&);
+        bool exec(zia::api::HttpDuplex&);
+        bool config(const zia::api::Conf& conf);
 };

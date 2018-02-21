@@ -18,6 +18,7 @@ namespace zia
         return ((Loader)dlsym(this->sharedLib, "create"))();
     }
 
+
     SharedLib::~SharedLib()
     {
         if (this->sharedLib != nullptr)

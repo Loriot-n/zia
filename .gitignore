@@ -1,3 +1,4 @@
 *.o
 debug
-zib.sublime-project
+zia.sublime-project
+*.so

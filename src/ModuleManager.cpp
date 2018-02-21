@@ -9,6 +9,13 @@ namespace zia
         this->getModulesList();   
     }
 
+    ModuleManager &ModuleManager::getInstance()
+    {
+       
+        static ModuleManager instance("./Modules");
+        return instance;
+    }
+
     void ModuleManager::getModulesList()
     {
         this->modulesList.clear();
@@ -34,7 +41,7 @@ namespace zia
                     {
                         std::string name = file.substr(0, file.length() - 3);
                         std::cout << name << std::endl;
-                        this->modulesList[name] = dirName + "/" + file;
+                        this->modulesList[name] = dirName + "/" + name;
                     }
                 }
             }
@@ -47,22 +54,28 @@ namespace zia
     {
         IModule *module;
 
-        SharedLib *sharedLib = new SharedLib(this->modulesList[name]);
+        SharedLib *sharedLib = new SharedLib(this->modulesList[name] + ".so");
         module = sharedLib->load();
-        delete sharedLib;
+        if (module == nullptr)
+        {
+            std::cerr <<"erreur " << std::endl;
+        }
+        //Config conf(this->modulesList[name] + ".conf");
+        //module->config(conf.getConf());
+        //delete sharedLib;
         this->modules.push_back(module);
     }
 
-    void ModuleManager::process(const HttpDuplex &duplex)
+    void ModuleManager::process(HttpDuplex &duplex)
     {
         this->modules.sort([](IModule *a, IModule *b) -> bool
         {
             return a->getPriority() > b->getPriority();
         });
-
         for(IModule *module : this->modules)
         {
-            module->exec(duplex);
+            module->exec(duplex);           
         }
+        this->modules.clear();
     }
 }

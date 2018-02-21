@@ -19,7 +19,9 @@ int Main::main(const int ac, const std::string *av)
         //Signaux KILL,..
         delete workerManager;*/
 
-        zia::ModuleManager *md = new zia::ModuleManager("./responses");
+        zia::api::HttpDuplex duplex;
+        zia::ModuleManager::getInstance().load("response");
+        zia::ModuleManager::getInstance().process(duplex);
     }
     catch(std::exception & e)
     {
