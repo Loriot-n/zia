@@ -44,9 +44,11 @@ namespace zia
 
     void ModuleManager::load(const std::string &name)
     {
+	using create_t = IModule *(*)();
 	DynLib &lib = libs.emplace_back(modulesList[name]);
+
 	lib.load();
-	auto create = lib.resolve<IModule *(*)()>("create");
+	create_t create = lib.resolve<create_t>("create");
         this->modules.emplace_back(create());
     }
 
