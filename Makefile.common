@@ -3,7 +3,6 @@ RM	= rm -rf
 
 SRCS		= src/main.cpp \
 	src/Main.cpp \
-	src/Worker.cpp \
 	src/Config.cpp \
 	src/ModuleManager.cpp \
 	src/socket/Handler.cpp \
@@ -11,6 +10,5 @@ SRCS		= src/main.cpp \
 	src/socket/Reactor.cpp \
 	src/socket/Session.cpp \
 	src/socket/Stream.cpp \
-	src/http/RequestHandler.cpp \
 	src/http/HttpParser.cpp \
 	src/Server.cpp
