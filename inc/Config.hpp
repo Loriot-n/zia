@@ -74,6 +74,9 @@ namespace zia
 	}
     }
 
+    zia::api::ConfObject::iterator find(std::string const &name);
+    void erase(zia::api::ConfObject::iterator it);
+    zia::api::ConfObject::iterator end();
     api::ConfObject const &getConf() const;
     api::ConfObject &getConf();
   };

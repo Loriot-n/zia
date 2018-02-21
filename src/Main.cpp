@@ -1,5 +1,6 @@
 #include "Main.hpp"
 #include "Config.hpp"
+#include "CheckConfig.hpp"
 
 using namespace zia;
 
