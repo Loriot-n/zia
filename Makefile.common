@@ -11,4 +11,5 @@ SRCS		= src/main.cpp \
 	src/socket/Session.cpp \
 	src/socket/Stream.cpp \
 	src/http/HttpParser.cpp \
-	src/Server.cpp
+	src/Server.cpp \
+	src/SharedLib.cpp

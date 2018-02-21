@@ -9,7 +9,7 @@ LDFLAGS	+= -ljsoncpp
 
 LDFLAGS	+= -lpthread
 
-CXXFLAGS += -W -Wall -Iinc -std=c++17
+CXXFLAGS += -W -Wall -Iinc  -std=c++17
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS+= -DDEBUG -g3 -Wfatal-errors
@@ -31,17 +31,19 @@ clean: ## Clean .o
 
 fclean: clean ## Clean binary and .o
 	$(RM) $(NAME)
-	# $(RM) debug
+	$(RM) debug
 
 clean_comment: ## Clean all comment //
-	find -type f -name "*.cpp" | xargs sed -i 's://.*28198::g'
+	find -type f -name "*.cpp" | xargs sed -i 's://.*15451::g'
 
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
 debug: fclean ## Compile to debug mode
 	make -j re DEBUG=1
-	mkdir -p debug
+	mkdir debug
+	make -j -C default_module/
+	cp default_module/response.so ./Modules/response/
 	mv $(NAME) debug/
 
 re: fclean all ## Recompile

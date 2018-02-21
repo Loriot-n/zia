@@ -8,15 +8,9 @@ RM	= rm -rf
 
 LDFLAGS	+= -shared
 
-CXXFLAGS += -W -Wall -Iinclude -fPIC -std=c++17
+CXXFLAGS += -W -Wall -Iinc -I../inc -fPIC -rdynamic -std=c++17
 
-ifeq ($(DEBUG), 1)
-	CXXFLAGS+= -DDEBUG -g3
-else
-	CXXFLAGS+= -Werror 
-endif
-
-SRCS	= sources/DefaultModule.cpp
+SRCS	= 	src/DefaultModule.cpp \
 
 OBJS	= $(SRCS:.cpp=.o)
 
@@ -35,15 +29,10 @@ fclean: clean ## Clean binary and .o
 	$(RM) debug
 
 clean_comment: ## Clean all comment //
-	find -type f -name "*.cpp" | xargs sed -i 's://.*3103::g'
+	find -type f -name "*.cpp" | xargs sed -i 's://.*15212::g'
 
 help: 
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
-
-debug: fclean ## Compile to debug mode
-	make re DEBUG=1
-	mkdir debug
-	mv $(NAME) debug/
 
 re: fclean all ## Recompile
 
