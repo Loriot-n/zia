@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include <json/json.h>
-#include "conf.hpp"
+#include "api/Conf.hpp"
 
 namespace zia
 {

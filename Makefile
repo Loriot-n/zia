@@ -1,6 +1,6 @@
-#.SILENT:
+.SILENT:
 
-CC	= g++
+include Makefile.common
 
 DEBUG	?= 0
 
@@ -8,22 +8,15 @@ RM	= rm -rf
 
 LDFLAGS	+= `pkg-config --libs jsoncpp`
 
-CXXFLAGS += -W -Wall -Iinc -std=c++17 -Iinc/api
+LDFLAGS	+= -lpthread
+
+CXXFLAGS += -W -Wall -Iinc -std=c++17
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS+= -DDEBUG -g3 -Wfatal-errors
 else
-	CXXFLAGS+= -g3#-Werror
+	CXXFLAGS+= -Werror
 endif
-
-SRCS	= 	src/main.cpp \
-	src/Main.cpp \
-	src/WorkerManager.cpp \
-	src/Worker.cpp \
-	src/Socket.cpp \
-	src/ServerSocket.cpp\
-	src/Config.cpp \
-	src/ModuleManager.cpp \
 
 OBJS	= $(SRCS:.cpp=.o)
 
@@ -47,7 +40,7 @@ clean_comment: ## Clean all comment //
 help:
 	@grep -E '(^[a-zA-Z_-]+:.*?##.*$$)|(^##)' Makefile | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[32m%-30s\033[0m %s\n", $$1, $$2}' | sed -e 's/\[32m##/[33m/'
 
-debug: 
+debug:
 	## fclean ## Compile to debug mode
 	make DEBUG=1
 	# mkdir debug
