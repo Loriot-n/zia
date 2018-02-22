@@ -19,7 +19,6 @@ DynLib::DynLib(DynLib &&o)
 {
   o.handle = nullptr;
   o.handle = nullptr;
-  std::cout << "movingctr" << std::endl;
 }
 
 DynLib::~DynLib()
