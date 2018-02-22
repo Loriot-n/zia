@@ -32,7 +32,7 @@ namespace zia {
 		duplex.raw_req = r;
 		p.parse(duplex.req);
 		ModuleManager &moduleManager = ModuleManager::getInstance();
-		// moduleManager.load("response");
+		moduleManager.load("php-cgi");
 		moduleManager.process(duplex);
 
 	}

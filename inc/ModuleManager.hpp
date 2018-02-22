@@ -28,9 +28,8 @@ namespace zia
             void getModulesList();
 
         private:
-	    std::vector<DynLib> libs;
             std::list<std::unique_ptr<IModule>> modules;
-            std::map<std::string, std::string> modulesList;
+            std::map<std::string, std::pair<std::string, DynLib>> modulesList;
             std::string modulesDir;
 
             void readDir(const std::string &dirName);

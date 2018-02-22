@@ -12,7 +12,7 @@ namespace zia
     ModuleManager &ModuleManager::getInstance()
     {
 
-        static ModuleManager instance("./Modules");
+        static ModuleManager instance("./modules");
         return instance;
     }
 
@@ -36,12 +36,15 @@ namespace zia
                 }
                 else
                 {
-                    std::string file(read->d_name);
+                    std::string const file(read->d_name);
                     if (file.find(".so") != std::string::npos)
                     {
-                        std::string name = file.substr(0, file.length() - 3);
+                        std::string const name = file.substr(0, file.length() - 3);
                         std::cout << name << std::endl;
-                        this->modulesList[name] = dirName + "/" + name;
+			std::string const filepath = dirName + "/" + name;
+                        this->modulesList.emplace(std::make_pair(name,
+								 std::make_pair(filepath,
+								 DynLib(filepath + ".so"))));
                     }
                 }
             }
@@ -52,7 +55,7 @@ namespace zia
     void ModuleManager::load(const std::string &name)
     {
 	using create_t = IModule *(*)();
-	DynLib &lib = libs.emplace_back(modulesList[name]);
+	DynLib &lib = modulesList.at(name).second;
 
 	lib.load();
 	create_t create = lib.resolve<create_t>("create");
