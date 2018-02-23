@@ -17,11 +17,11 @@ public:
 private:
   std::string rootPath;
 
-  void putStringToResp(std::string const &, zia::api::HttpResponse &);
-  void addHeader(zia::api::HttpDuplex &, std::string const &key, std::string const &value);
-
   void handleDir(fs::path const &target, zia::api::HttpDuplex &);
   void handleFile(fs::path const &target, zia::api::HttpDuplex &);
   bool hasIndexHtml(fs::path const &targetDir) const;
   void handleFileError(fs::path const &target, zia::api::HttpDuplex &);
+
+  void putStringToResp(std::string const &, zia::api::HttpResponse &);
+  void addHeader(zia::api::HttpDuplex &, std::string const &key, std::string const &value);
 };

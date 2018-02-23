@@ -27,7 +27,7 @@ bool FileReader::exec(zia::api::HttpDuplex &dup)
 
 bool FileReader::config(zia::api::Conf const &conf)
 {
-  auto root = std::get_if<std::string>(&conf.at("root").v);
+  auto root = std::get_if<std::string>(&conf.at("document_root").v);
   if (root)
     {
       rootPath = *root;
@@ -36,18 +36,6 @@ bool FileReader::config(zia::api::Conf const &conf)
   return false;
 }
 
-void FileReader::putStringToResp(std::string const &str, zia::api::HttpResponse &resp)
-{
-  std::byte const *bytes = reinterpret_cast<std::byte const *>(str.c_str());
-  resp.body.insert(resp.body.end(), bytes, bytes + str.size());
-}
-
-void FileReader::addHeader(zia::api::HttpDuplex &dup,
-			   std::string const &key, std::string const &value)
-{
-  dup.resp.headers.emplace(std::make_pair(key, value));
-
-}
 
 void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
 {
@@ -108,14 +96,38 @@ bool FileReader::hasIndexHtml(boost::filesystem::path const &targetDir) const
 {
   for (fs::directory_entry &entry : fs::directory_iterator(targetDir))
     {
-      std::cout << "checking " << entry.path().filename().native() << std::endl;
       if (entry.path().filename().native() == "index.html")
 	return true;
     }
   return false;
 }
 
-void FileReader::handleFileError(fs::path const &target, zia::api::HttpDuplex &)
+void FileReader::handleFileError(fs::path const &target, zia::api::HttpDuplex &dup)
 {
-  std::cerr << target << " not found" << std::endl;
+  if (!fs::exists(target))
+    {
+      dup.resp.status = zia::api::http::common_status::not_found;
+      dup.resp.reason = "Not Found";
+    }
+  else
+    {
+      fs::file_status file = fs::status(target);
+      if (!(file.permissions() & fs::owner_read))
+	{
+	  dup.resp.status = zia::api::http::common_status::forbidden;
+	  dup.resp.reason = "Forbidden";
+	}
+    }
+}
+
+void FileReader::putStringToResp(std::string const &str, zia::api::HttpResponse &resp)
+{
+  std::byte const *bytes = reinterpret_cast<std::byte const *>(str.c_str());
+  resp.body.insert(resp.body.end(), bytes, bytes + str.size());
+}
+
+void FileReader::addHeader(zia::api::HttpDuplex &dup,
+			   std::string const &key, std::string const &value)
+{
+  dup.resp.headers.emplace(std::make_pair(key, value));
 }
