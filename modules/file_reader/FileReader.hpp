@@ -8,6 +8,8 @@ class FileReader : public IModule
 private:
   std::string rootPath;
 
+  void putStringToResp(std::string const &, zia::api::HttpResponse &);
+
 public:
   FileReader() : IModule(5) {};
 
