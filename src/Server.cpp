@@ -1,5 +1,6 @@
 #include "Server.hpp"
 #include "http/HttpParser.hpp"
+#include "ModuleManager.hpp"
 
 namespace zia {
 
@@ -35,9 +36,10 @@ namespace zia {
 		duplex.raw_req = r;
 		p.parse(duplex.req);
 
-		std::string s("HTTP/1.1 200 OK\r\nConnection:Closed\r\n\r\n");
+		ModuleManager &moduleManager = ModuleManager::getInstance();
+		moduleManager.load("php-cgi");
+		moduleManager.process(duplex);
 
-		netInfo.sock->stream.send(s.data(), s.length());
 	}
 
 	bool Server::run(Callback cb) {

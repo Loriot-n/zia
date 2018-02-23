@@ -1,0 +1,4 @@
+/mnt/c/Users/Queenie/Documents/Rendus/Zia/tests/build/CMakeFiles/rebuild_cache.dir
+/mnt/c/Users/Queenie/Documents/Rendus/Zia/tests/build/CMakeFiles/edit_cache.dir
+/mnt/c/Users/Queenie/Documents/Rendus/Zia/tests/build/CMakeFiles/gtest_main.dir
+/mnt/c/Users/Queenie/Documents/Rendus/Zia/tests/build/CMakeFiles/gtest.dir

@@ -7,7 +7,7 @@
 namespace zia {
 
 	Reactor::Reactor(int maxEv) {
-		
+
 		_epfd = ::epoll_create(maxEv);
 		if (_epfd == -1) {
 	   		throw SocketException("Can't create epoll");
@@ -41,7 +41,7 @@ namespace zia {
 	  	ev.events = EPOLLIN | EPOLLONESHOT;
 	  	ev.data.fd = handler->getHandler();
 
-	  	if (epoll_ctl(_epfd, EPOLL_CTL_MOD, handler->getHandler(), &ev) < 0) 
+	  	if (epoll_ctl(_epfd, EPOLL_CTL_MOD, handler->getHandler(), &ev) < 0)
 	    	throw SocketException("Can't resume handler");
 	}
 
@@ -53,7 +53,7 @@ namespace zia {
 		ev.events = 0;
 		ev.data.fd = handler->getHandler();
 
-		if (epoll_ctl(_epfd, EPOLL_CTL_DEL, handler->getHandler(), &ev) < 0) 
+		if (epoll_ctl(_epfd, EPOLL_CTL_DEL, handler->getHandler(), &ev) < 0)
 			throw SocketException("Can't remove handler");
 
 		auto pos = _handlers.find(handler->getHandler());
@@ -68,7 +68,7 @@ namespace zia {
 
 		::bzero(&_epev, sizeof(_epev));
 		while (1) {
-			
+
 			int ndfs = epoll_wait(_epfd, &_epev, 1, -1);
 			if (ndfs == -1) {
 				if (errno == EINTR) continue;
@@ -76,7 +76,7 @@ namespace zia {
 			}
 
 			for (int i = 0; i < ndfs; i++) {
-				
+
 				auto pos = _handlers.find(_epev.data.fd);
 				if (pos == _handlers.end())
 					throw SocketException("Reactor failed to find handler");
