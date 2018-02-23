@@ -7,6 +7,8 @@
 
 #include "api/Net.hpp"
 #include "api/Conf.hpp"
+#include "api/Http.hpp"
+
 
 #include "socket/Reactor.hpp"
 #include "socket/Listener.hpp"
@@ -22,17 +24,18 @@ namespace zia {
 			Server(api::Conf &c);
 			~Server();
 
-			bool run(Callback cb);
-			bool send(api::ImplSocket *, const api::Net::Raw &);
-			bool stop();
+			bool run(Callback cb) override;
+			bool send(api::ImplSocket *, const api::Net::Raw &) override;
+			bool stop() override;
 			static void handleRequest(Raw, api::NetInfo);
 
 		protected:
 			long long _port;
+			long long _sslPort;
 			long long _timeout;
 			long long _maxEv;
 			long long _threadPoolSize;
-			Callback  _cb;
+			api::HttpDuplex _duplex;
 
 	};
 }

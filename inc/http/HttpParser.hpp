@@ -12,7 +12,7 @@ namespace zia {
 	class HttpParser {
 
 		public:
-			HttpParser(api::Net::Raw &, api::NetInfo &);
+			HttpParser(api::Net::Raw &);
 			~HttpParser() {};
 
 			bool	parse(api::HttpRequest &);
@@ -24,7 +24,6 @@ namespace zia {
 
 
 			api::Net::Raw 		_raw;
-			api::NetInfo 		_info;
 			char 		 		*_rawStr;
 			char 				*_endMsg;
 

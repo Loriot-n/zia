@@ -17,7 +17,7 @@ namespace zia {
 	class Listener : public Handler {
 
 		private:
-			Listener(ReactorPtr server, ReactorPtr session, unsigned int timeout, unsigned int port);
+			Listener(ReactorPtr server, ReactorPtr session, unsigned int timeout, unsigned int port, bool);
 
 		public:
 			Listener(const Listener &) = delete;
@@ -28,8 +28,9 @@ namespace zia {
 				ReactorPtr listenerReactor,
 				ReactorPtr connectionReactor,
 				unsigned int timeout,
-				unsigned int port) {
-					return ListenerPtr(new Listener(listenerReactor, connectionReactor, timeout, port));
+				unsigned int port,
+				bool isTLS) {
+					return ListenerPtr(new Listener(listenerReactor, connectionReactor, timeout, port, isTLS));
 			}
 
 			void accept(Stream &);
@@ -48,5 +49,7 @@ namespace zia {
 
 			unsigned int _timeout;
 			unsigned int _port;
+
+			bool 		_isTLS;
 	};
 }

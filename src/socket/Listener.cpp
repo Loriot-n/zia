@@ -4,11 +4,12 @@
 
 namespace zia {
 
-	Listener::Listener(ReactorPtr server, ReactorPtr session, unsigned int timeout, unsigned int port) :
+	Listener::Listener(ReactorPtr server, ReactorPtr session, unsigned int timeout, unsigned int port, bool isTLS) :
 		_server(server),
 		_session(session),
 		_timeout(timeout),
-		_port(port)
+		_port(port),
+		_isTLS(isTLS)
 	{
 
 	}
@@ -16,13 +17,12 @@ namespace zia {
 	Listener::~Listener() {
 	}
 
-
 	void Listener::open() {
-		if ((_socket = socket(AF_INET, SOCK_STREAM, 0)) == -1)
+		if ((_socket = ::socket(AF_INET, SOCK_STREAM, 0)) == -1)
 			throw SocketException("Can't create socket");
 
 		int yes = 1;
-		if (setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1)
+		if (::setsockopt(_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1)
 			throw SocketException("Can't set socket options");
 
 		sockaddr_in serveraddr;
@@ -30,11 +30,11 @@ namespace zia {
 		serveraddr.sin_addr.s_addr = INADDR_ANY;
 		serveraddr.sin_port = htons(_port);
 
-		memset(&(serveraddr.sin_zero), '\0', 8);
+		::memset(&(serveraddr.sin_zero), '\0', 8);
 
-		if (bind(_socket, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) == -1)
+		if (::bind(_socket, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) == -1)
 			throw SocketException(std::string("Bind :") + std::string(strerror(errno)));
-		if (listen(_socket, SOMAXCONN) == -1)
+		if (::listen(_socket, SOMAXCONN) == -1)
 			throw SocketException("Can't listen on the socket");
 		struct timeval tv;
 
@@ -55,6 +55,7 @@ namespace zia {
 		if ((socket = ::accept(_socket, (struct sockaddr *)&clientaddr, &addrlen)) == -1)
 			throw SocketException("Can't accept connection");
 
+		s.setTLS(_isTLS);
 		s.setSock(socket);
 		s.setAddr(clientaddr);
 	}
