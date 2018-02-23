@@ -48,4 +48,9 @@ debug: fclean ## Compile to debug mode
 
 re: fclean all ## Recompile
 
+%.o:		%.cpp
+		$(CXX) $(CXXFLAGS) -c $< -o $@ && echo "  CXX\t $(@F)"
+
 .PHONY: all re clean fclean help debug clean_comment
+
+.SILENT: all re clean fclean help debug clean_comment $(NAME) $(OBJS)
