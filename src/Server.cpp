@@ -10,7 +10,7 @@ namespace zia {
 		// TODO: Get conf value
 		(void)c;
 		_port = 4242;
-		_timeout = 10;
+		_timeout = 1;
 		_threadPoolSize = std::thread::hardware_concurrency();
 		_maxEv = 256;
 	}
@@ -32,7 +32,8 @@ namespace zia {
 		duplex.raw_req = r;
 		p.parse(duplex.req);
 		ModuleManager &moduleManager = ModuleManager::getInstance();
-		moduleManager.load("php-cgi");
+		moduleManager.load("file_reader");
+		moduleManager.load("response");
 		moduleManager.process(duplex);
 
 	}

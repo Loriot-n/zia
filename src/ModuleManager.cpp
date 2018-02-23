@@ -60,6 +60,8 @@ namespace zia
 	lib.load();
 	create_t create = lib.resolve<create_t>("create");
         this->modules.emplace_back(create());
+	Config config("conf/Zia.conf");
+	modules.back()->config(config.getConf());
     }
 
     void ModuleManager::process(HttpDuplex &duplex)
