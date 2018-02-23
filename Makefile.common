@@ -1,6 +1,9 @@
 CC	= g++
 RM	= rm -rf
 
+LDFLAGS		+= -ljsoncpp -ldl -lpthread
+CXXFLAGS	+= -W -Wall -Wextra -Iinc
+
 SRCS		= src/main.cpp \
 	src/Main.cpp \
 	src/Config.cpp \

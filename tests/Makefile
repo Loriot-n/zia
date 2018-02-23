@@ -6,8 +6,7 @@ NAME		= zia_test
 
 CXX			= g++
 LDFLAGS		+= -Lbuild/ -lgtest -lgtest_main -pthread
-LDFLAGS		+= -ljsoncpp -ldl
-CXXFLAGS	+= -W -Wall -Wextra -Igoogletest/googletest/include/ -I../inc -g -std=c++17
+CXXFLAGS	+= -Igoogletest/googletest/include/ -g -I../inc -std=c++17
 
 SRC = $(addprefix ../, $(SRCS))
 SRCTEST	+= $(filter-out ../src/main.cpp ../src/Main.cpp, $(SRC)) main.cpp
