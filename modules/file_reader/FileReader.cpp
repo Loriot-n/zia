@@ -12,8 +12,9 @@ extern "C" IModule *create()
 
 bool FileReader::exec(zia::api::HttpDuplex &dup)
 {
-  fs::path const target = fs::path(rootPath) / fs::path(dup.req.uri);
-  std::cout << "Requesting file " << rootPath << " / " << dup.req.uri << std::endl;
+  std::cout << "-------\nFILE_READER MODULE: " << std::endl;
+  fs::path target = fs::path(rootPath) / fs::path(dup.req.uri);
+  std::cout << "Requesting file " << target << std::endl;
   if (fs::is_directory(target))
     {
       handleDir(target, dup);
@@ -51,15 +52,17 @@ void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
     "<html lang=\"en_UK\">\n"
     "<head>\n"
     "<meta charset=\"UTF-8\">\n"
-    "<title>Index of /" << target.filename().native() << "</title>\n"
+    "<title>Index of /" <<  "</title>\n"
     "</head>\n"
     "<body>\n"
+    "<h1> Index of /" << "</h1>"
     "<table>\n"
     "<tr><td><a href=\"" << "../\">" << "../</a></td></tr>\n";
   putStringToResp(top.str(), dup.resp);
+  std::cout << "Content:" << std::endl;
   for (fs::directory_entry &entry : fs::directory_iterator(target))
     {
-      std::cout << entry.path() << std::endl;
+      std::cout << "    " << entry.path() << std::endl;
       std::stringstream ss;
       ss << "<tr><td><a href=\"" << entry.path().filename().native();
       if (fs::is_directory(entry))
@@ -75,16 +78,20 @@ void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
     "</body>\n"
     "</html>\n",
     dup.resp);
+  dup.resp.status = zia::api::http::common_status::ok;
+  dup.resp.reason = "OK";
 }
 
 void FileReader::handleFile(fs::path const &target, zia::api::HttpDuplex &dup)
 {
   if (fs::ifstream inputStream{target, std::ios::binary})
     {
-      dup.resp.headers.emplace(std::make_pair("Content-Type", "text/plain"));
+      addHeader(dup, "Content-Type", "text/plain");
       std::uintmax_t size = fs::file_size(target);
       dup.resp.body.resize(size);
       inputStream.read(reinterpret_cast<char *>(dup.resp.body.data()), size);
+      dup.resp.status = zia::api::http::common_status::ok;
+      dup.resp.reason = "OK";
     }
   else
     {

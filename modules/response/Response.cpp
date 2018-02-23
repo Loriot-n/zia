@@ -11,6 +11,7 @@ int Response::sendStatusLine(zia::api::HttpDuplex &dup)
 {
   std::stringstream ss;
   ss << dup.resp.version << ' ' << dup.resp.status << ' ' << dup.resp.reason << "\r\n";
+  std::cout << ss.str() << std::endl;
   return sendContainer(ss.str(), dup);
 }
 
@@ -28,12 +29,15 @@ int Response::sendHeaders(zia::api::HttpDuplex &dup)
 					return sendRaw(bytes, size, dup);
 				   });
     }
+  std::cout << "\r\n\r\n" << std::endl;
   size_sent += sendContainer(std::string_view("\r\n\r\n"), dup);
   return size_sent;
 }
 
 int Response::sendBody(zia::api::HttpDuplex &dup)
 {
+  std::cout.write(reinterpret_cast<char const *>(dup.resp.body.data()), dup.resp.body.size());
+  std::cout << "\r\n\r\n" << std::endl;
   return dup.info.sock->stream.send(dup.resp.body.data(), dup.resp.body.size())
     + sendContainer(std::string_view("\r\n\r\n"), dup);
 }
@@ -41,8 +45,8 @@ int Response::sendBody(zia::api::HttpDuplex &dup)
 bool Response::exec(zia::api::HttpDuplex &dup)
 {
   dup.resp.version = zia::api::http::Version::http_1_1;
-  dup.resp.status = 200;
-  dup.resp.reason = "OK";
+
+  std::cout << "-------\nRESPONSE MODULE: " << std::endl;
 
   sendStatusLine(dup);
   sendHeaders(dup);
