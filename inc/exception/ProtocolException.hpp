@@ -6,23 +6,13 @@
 
 namespace zia {
 
-    class ProtocolException : protected ServerException {
+    class ProtocolException : public ServerException {
 
         public:
-            ProtocolException(const char* message): ServerException(message) { _context = "ProtocolException : "; }
-            ProtocolException(const std::string& message): ServerException(message) { _context = "ProtocolException : "; }
+            ProtocolException(const char* message)
+	      : ServerException(std::string("ProtocolException : ") + message) {}
+            ProtocolException(const std::string& message)
+	      : ServerException("ProtocolException : " + message) {}
             virtual ~ProtocolException() throw () {}
-
-            virtual const char* what() const throw () {
-                std::string msg;
-                msg = _context + _msg;
-               return msg.c_str();
-            }
-
-        protected:
-            std::string _msg;
-
-        private:
-            std::string _context;
     };
 }
