@@ -2,9 +2,8 @@
 
 namespace zia {
 
-	HttpParser::HttpParser(api::Net::Raw &r, api::NetInfo &netinfo) :
-	_raw(r),
-	_info(netinfo)
+	HttpParser::HttpParser(api::Net::Raw &r) :
+	_raw(r)
 	{
 		_rawStr = reinterpret_cast<char *>(_raw.data());
 		_endMsg = reinterpret_cast<char *>(&_raw.back());

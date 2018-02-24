@@ -6,21 +6,13 @@
 
 namespace zia {
 
-    class SocketException : protected ServerException {
+    class SocketException : public ServerException {
 
         public:
-            SocketException(const char* message): ServerException(message) { _context = "SocketException : "; }
-            SocketException(const std::string& message): ServerException(message) { _context = "SocketException : "; }
+            SocketException(const char* message)
+	      : ServerException(std::string("SocketException : ") + message) {}
+            SocketException(const std::string& message)
+	      : ServerException("SocketException : " + message) {}
             virtual ~SocketException() throw () {}
-
-            virtual const char* what() const throw () {
-               return (_context + _msg).c_str();
-            }
-
-        protected:
-            std::string _msg;
-
-        private:
-            std::string _context;
     };
 }

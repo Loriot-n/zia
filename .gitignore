@@ -3,6 +3,7 @@ debug
 *.a
 zia
 zia_test
+zia.log
 
 # Loriot
 .syntastic_cpp_config

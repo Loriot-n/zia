@@ -10,7 +10,8 @@ namespace zia {
 		// TODO: Get conf value
 		(void)c;
 		_port = 4242;
-		_timeout = 10;
+		_sslPort = 4343;
+		_timeout = 1;
 		_threadPoolSize = std::thread::hardware_concurrency();
 		_maxEv = 256;
 	}
@@ -22,15 +23,19 @@ namespace zia {
 	void Server::handleRequest(Raw r, api::NetInfo netInfo) {
 		/*
 		std::time_t tt = std::chrono::system_clock::to_time_t(netInfo.time);
-		std::cout << ctime(&tt) <<  "Request from " << netInfo.ip.str << ":" << netInfo.port << std::endl;
+		std::cout << "\n" << ctime(&tt) <<  "Request from " << netInfo.ip.str << ":" << netInfo.port << std::endl;
 
-		HttpParser p(r, netInfo);
+		if (netInfo.sock->isTLS)
+			std::cout << "TLS Connection established" << std::endl;
+
+		HttpParser p(r);
 
 		api::HttpDuplex duplex;
 
 		duplex.info = netInfo;
 		duplex.raw_req = r;
 		p.parse(duplex.req);
+
 		ModuleManager &moduleManager = ModuleManager::getInstance();
 		moduleManager.load("php-cgi");
 		moduleManager.process(duplex);
@@ -45,22 +50,37 @@ namespace zia {
 
 			// Create the sockets
 			ReactorPtr listenerReactor(new Reactor(_maxEv));
+			ReactorPtr sslListenerReactor(new Reactor(_maxEv));
 			ReactorPtr connectionReactor(new Reactor(_maxEv));
 
 			ListenerPtr listener = Listener::create(listenerReactor,
 													connectionReactor,
 													_timeout,
-													_port);
+													_port,
+													false);
 			listener->open();
 
+			// TLS Listener
+			ListenerPtr sslListener = Listener::create(listenerReactor,
+													connectionReactor,
+													_timeout,
+													_sslPort,
+													true);
+			sslListener->open();
+
+
 			// Listening thread : accept socket and create session
+			std::thread sslListenerThread([&]() {
+				sslListenerReactor->handleEvents(cb);
+			});
+
 			std::thread listenerThread([&]() {
 				listenerReactor->handleEvents(cb);
 			});
 
 			// Session threads : handle request
 			std::vector<std::thread> workers;
-			for (unsigned int i = 0 ; i < _threadPoolSize - 1 ; i++) {
+			for (unsigned int i = 0 ; i < _threadPoolSize - 2 ; i++) {
 				workers.push_back(std::thread([&]() {
 					connectionReactor->handleEvents(cb);
 				}));
