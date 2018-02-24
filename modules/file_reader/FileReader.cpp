@@ -90,7 +90,6 @@ void FileReader::handleFile(fs::path const &target, zia::api::HttpDuplex &dup)
 {
   if (fs::ifstream inputStream{target, std::ios::binary})
     {
-      addHeader(dup, "Content-Type", "text/plain");
       std::uintmax_t size = fs::file_size(target);
       dup.resp.body.resize(size);
       inputStream.read(reinterpret_cast<char *>(dup.resp.body.data()), size);
