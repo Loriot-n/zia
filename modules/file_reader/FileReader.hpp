@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <boost/filesystem.hpp>
+#include <string_view>
 #include "IModule.hpp"
 
 namespace fs = boost::filesystem;
@@ -23,5 +24,6 @@ private:
   void handleFileError(fs::path const &target, zia::api::HttpDuplex &);
 
   void putStringToResp(std::string const &, zia::api::HttpResponse &);
+  void putStringToResp(std::string_view, zia::api::HttpResponse &);
   void addHeader(zia::api::HttpDuplex &, std::string const &key, std::string const &value);
 };

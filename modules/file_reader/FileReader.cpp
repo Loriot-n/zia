@@ -118,7 +118,7 @@ void FileReader::handleFileError(fs::path const &target, zia::api::HttpDuplex &d
     {
       dup.resp.status = zia::api::http::common_status::not_found;
       dup.resp.reason = "Not Found";
-      putStringToResp(R"|(
+      putStringToResp(std::string_view(R"|(
 <!DOCTYPE html>
 <html>
 <head>
@@ -130,33 +130,22 @@ p {margin-left: 3em;}
 span {font-size: smaller;}
 /*]]>*/--></style>
 </head>
-
 <body>
 <h1>Object not found!</h1>
 <p>
-
-
 The requested URL was not found on this server.
-
-
-
 If you entered the URL manually please check your
 spelling and try again.
-
-
-
 </p>
 <p>
 If you think this is a server error, please contact
 the <a href="mailto:you@example.com">webmaster</a>.
-
 </p>
-
 <h2>Error 404</h2>
 </body>
 </html>
 
-)|",
+)|"),
       dup.resp);
     }
   else
@@ -164,7 +153,7 @@ the <a href="mailto:you@example.com">webmaster</a>.
       fs::file_status file = fs::status(target);
       if (!(file.permissions() & fs::owner_read))
 	{
-	  putStringToResp(R"|(
+	  putStringToResp(std::string_view(R"|(
 <!DOCTYPE html>
 <html>
 <head>
@@ -187,12 +176,18 @@ If you think this is a server error, please contact
 the <a href="mailto:you@example.com">webmaster</a>.
 </p>
 <h2>Error 403</h2>
-</body>)|",
+</body>)|"),
 	  dup.resp);
 	  dup.resp.status = zia::api::http::common_status::forbidden;
 	  dup.resp.reason = "Forbidden";
 	}
     }
+}
+
+void FileReader::putStringToResp(std::string_view str, zia::api::HttpResponse &resp)
+{
+  std::byte const *bytes = reinterpret_cast<std::byte const *>(str.data());
+  resp.body.insert(resp.body.end(), bytes, bytes + str.size());
 }
 
 void FileReader::putStringToResp(std::string const &str, zia::api::HttpResponse &resp)
