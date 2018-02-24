@@ -43,7 +43,7 @@ debug: fclean ## Compile to debug mode
 	mkdir debug
 	# make -j -C default_module/
 	# cp default_module/response.so ./Modules/response/
-	make -C modules/Php-cgi
+	#make -C modules/Php-cgi
 	mv $(NAME) debug/
 
 re: fclean all ## Recompile

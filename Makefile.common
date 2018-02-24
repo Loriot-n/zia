@@ -12,4 +12,5 @@ SRCS		= src/main.cpp \
 	src/socket/Stream.cpp \
 	src/http/HttpParser.cpp \
 	src/Server.cpp \
-	src/DynLib.cpp
+	src/DynLib.cpp \
+	src/LibManager.cpp

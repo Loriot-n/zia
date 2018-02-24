@@ -20,7 +20,7 @@ namespace zia {
 	}
 
 	void Server::handleRequest(Raw r, api::NetInfo netInfo) {
-
+		/*
 		std::time_t tt = std::chrono::system_clock::to_time_t(netInfo.time);
 		std::cout << ctime(&tt) <<  "Request from " << netInfo.ip.str << ":" << netInfo.port << std::endl;
 
@@ -34,7 +34,7 @@ namespace zia {
 		ModuleManager &moduleManager = ModuleManager::getInstance();
 		moduleManager.load("php-cgi");
 		moduleManager.process(duplex);
-
+		*/
 	}
 
 	bool Server::run(Callback cb) {
