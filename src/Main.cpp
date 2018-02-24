@@ -32,6 +32,7 @@ int Main::main(const int ac, const std::string *av)
           }
           //m1.load("httpParser");
           m1.load("file_reader");
+          m1.process(duplex);
 
           ModuleManager m2(LibManager::getInstance(config));
           m2.load("response");
