@@ -3,7 +3,7 @@
 
 namespace zia
 {
-    ModuleManager::ModuleManager(const LibManager &manager) : libManager(manager)
+    ModuleManager::ModuleManager(LibManager &manager) : libManager(manager)
     {}
 
     void ModuleManager::load(const std::string &name)

@@ -19,11 +19,11 @@ namespace zia
     class ModuleManager
     {
         public:
-            ModuleManager(const LibManager &);
+            ModuleManager(LibManager &);
             void load(const std::string&);
             void process(HttpDuplex&);
         private:
-            const LibManager &libManager;
+            LibManager &libManager;
             std::list<std::unique_ptr<IModule>> modules;
             std::map<std::string, std::pair<std::string, DynLib>> modulesList;
             std::string modulesDir;
