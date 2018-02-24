@@ -49,15 +49,15 @@ void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
   std::stringstream top;
   top <<
     R"|(
-    <!DOCTYPE html>
-    <html lang="en_UK">
-    <head>
-    <meta charset="UTF-8">
-    <title>Index of /)|" <<  R"|(</title>
-    </head>
-    <body>
-    <h1> Index of /)|" << R"|(</h1>
-    <table>
+<!DOCTYPE html>
+<html lang="en_UK">
+<head>
+<meta charset="UTF-8">
+<title>Index of )|" << dup.req.uri <<  R"|(</title>
+</head>
+<body>
+<h1> Index of )|" << dup.req.uri << R"|(</h1>
+<table>
     )|"
     "<tr><td><a href=\"" << "../\">" << "../</a></td></tr>";
   putStringToResp(top.str(), dup.resp);
@@ -77,9 +77,9 @@ void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
     }
   putStringToResp(
     R"|(
-    </table>
-    </body>
-    </html>
+</table>
+</body>
+</html>
     )|",
     dup.resp);
   dup.resp.status = zia::api::http::common_status::ok;
