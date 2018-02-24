@@ -5,7 +5,7 @@
 namespace zia {
 
 
-	Server::Server(api::Conf &c) {
+	Server::Server(Config &c) {
 
 		// TODO: Get conf value
 		(void)c;
@@ -18,28 +18,6 @@ namespace zia {
 
 	Server::~Server() {
 
-	}
-
-	void Server::handleRequest(Raw r, api::NetInfo netInfo) {
-		/*
-		std::time_t tt = std::chrono::system_clock::to_time_t(netInfo.time);
-		std::cout << "\n" << ctime(&tt) <<  "Request from " << netInfo.ip.str << ":" << netInfo.port << std::endl;
-
-		if (netInfo.sock->isTLS)
-			std::cout << "TLS Connection established" << std::endl;
-
-		HttpParser p(r);
-
-		api::HttpDuplex duplex;
-
-		duplex.info = netInfo;
-		duplex.raw_req = r;
-		p.parse(duplex.req);
-
-		ModuleManager &moduleManager = ModuleManager::getInstance();
-		moduleManager.load("php-cgi");
-		moduleManager.process(duplex);
-		*/
 	}
 
 	bool Server::run(Callback cb) {

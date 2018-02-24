@@ -18,7 +18,7 @@ namespace zia
     {
         public:
             LibManager(const std::string &modulesDir);
-            LibManager &getInstance(const Config &serverConfig);
+            static LibManager &getInstance(const Config &serverConfig);
             std::map<std::string, std::pair<std::string, DynLib>> modulesList;
         private:
             void getModulesList();
