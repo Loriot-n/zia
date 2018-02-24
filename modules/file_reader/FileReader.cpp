@@ -48,16 +48,18 @@ void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
 
   std::stringstream top;
   top <<
-    "<!DOCTYPE html>\n"
-    "<html lang=\"en_UK\">\n"
-    "<head>\n"
-    "<meta charset=\"UTF-8\">\n"
-    "<title>Index of /" <<  "</title>\n"
-    "</head>\n"
-    "<body>\n"
-    "<h1> Index of /" << "</h1>"
-    "<table>\n"
-    "<tr><td><a href=\"" << "../\">" << "../</a></td></tr>\n";
+    R"|(
+    <!DOCTYPE html>
+    <html lang="en_UK">
+    <head>
+    <meta charset="UTF-8">
+    <title>Index of /)|" <<  R"|(</title>
+    </head>
+    <body>
+    <h1> Index of /)|" << R"|(</h1>
+    <table>
+    )|"
+    "<tr><td><a href=\"" << "../\">" << "../</a></td></tr>";
   putStringToResp(top.str(), dup.resp);
   std::cout << "Content:" << std::endl;
   for (fs::directory_entry &entry : fs::directory_iterator(target))
@@ -74,9 +76,11 @@ void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
       putStringToResp(ss.str(), dup.resp);
     }
   putStringToResp(
-    "</table>\n"
-    "</body>\n"
-    "</html>\n",
+    R"|(
+    </table>
+    </body>
+    </html>
+    )|",
     dup.resp);
   dup.resp.status = zia::api::http::common_status::ok;
   dup.resp.reason = "OK";
@@ -115,12 +119,80 @@ void FileReader::handleFileError(fs::path const &target, zia::api::HttpDuplex &d
     {
       dup.resp.status = zia::api::http::common_status::not_found;
       dup.resp.reason = "Not Found";
+      putStringToResp(R"|(
+<!DOCTYPE html>
+<html>
+<head>
+<title>Object not found!</title>
+<link rev="made" href="mailto:you@example.com" />
+<style type="text/css"><!--/*--><![CDATA[/*><!--*/
+body { color: #000000; background-color: #FFFFFF; }
+a:link { color: #0000CC; }
+p, address {margin-left: 3em;}
+span {font-size: smaller;}
+/*]]>*/--></style>
+</head>
+
+<body>
+<h1>Object not found!</h1>
+<p>
+
+
+The requested URL was not found on this server.
+
+
+
+If you entered the URL manually please check your
+spelling and try again.
+
+
+
+</p>
+<p>
+If you think this is a server error, please contact
+the <a href="mailto:you@example.com">webmaster</a>.
+
+</p>
+
+<h2>Error 404</h2>
+</address>
+</body>
+</html>
+
+)|",
+      dup.resp);
     }
   else
     {
       fs::file_status file = fs::status(target);
       if (!(file.permissions() & fs::owner_read))
 	{
+	  putStringToResp(R"|(
+<!DOCTYPE html>
+<html>
+<head>
+<title>Access forbidden!</title>
+<link rev="made" href="mailto:you@example.com" />
+<style type="text/css"><!--/*--><![CDATA[/*><!--*/
+body { color: #000000; background-color: #FFFFFF; }
+a:link { color: #0000CC; }
+p, address {margin-left: 3em;}
+span {font-size: smaller;}
+/*]]>*/--></style>
+</head>
+<body>
+<h1>Access forbidden!</h1>
+<p>
+You don't have permission to access the requested object.
+It is either read-protected or not readable by the server.
+</p>
+<p>
+If you think this is a server error, please contact
+the <a href="mailto:you@example.com">webmaster</a>.
+</p>
+<h2>Error 403</h2>
+</body>)|",
+	  dup.resp);
 	  dup.resp.status = zia::api::http::common_status::forbidden;
 	  dup.resp.reason = "Forbidden";
 	}
