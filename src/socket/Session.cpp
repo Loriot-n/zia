@@ -26,6 +26,7 @@ namespace zia {
 		netInfo.port = clientaddr.sin_port;
 
 		_implSocket.stream = _stream;
+		_implSocket.isTLS = _stream.isTLS();
 		netInfo.sock = &_implSocket;
 		return (0);
 	}
@@ -38,13 +39,17 @@ namespace zia {
 		if (req.empty())
 			req.reserve(pageSize);
 
-		uint64_t totalRead = 0; 
+		uint64_t totalRead = 0;
 
 		// THIS IS TEMPORARY
-		// Check for a \r\n\r\n in vector to check the end of headers
+		// Check for a \r\n\r\n in vector to check the end of headers	
 		while (1) {
 
 			int r = _stream.recv(buf, pageSize, _timeout);
+
+			// std::string header(buf, s);
+			// if header.find("Content-Length")
+
 			if (r <= 0) {
 				return totalRead;
 			}

@@ -3,65 +3,19 @@
 
 namespace zia
 {
-    ModuleManager::ModuleManager(const std::string &modulesDir)
-    {
-        this->modulesDir = modulesDir;
-        this->getModulesList();
-    }
-
-    ModuleManager &ModuleManager::getInstance()
-    {
-
-        static ModuleManager instance("./modules");
-        return instance;
-    }
-
-    void ModuleManager::getModulesList()
-    {
-        this->modulesList.clear();
-        this->readDir(this->modulesDir);
-    }
-
-    void ModuleManager::readDir(const std::string &dirName)
-    {
-        DIR *dir = ::opendir(dirName.c_str());
-        t_dir read;
-        while((read = ::readdir(dir)) != nullptr)
-        {
-            if (read->d_name[0] != '.')
-            {
-                if (read->d_type == DT_DIR)
-                {
-                    this->readDir(dirName + "/" + std::string(read->d_name));
-                }
-                else
-                {
-                    std::string const file(read->d_name);
-                    if (file.find(".so") != std::string::npos)
-                    {
-                        std::string const name = file.substr(0, file.length() - 3);
-                        std::cout << name << std::endl;
-			std::string const filepath = dirName + "/" + name;
-                        this->modulesList.emplace(std::make_pair(name,
-								 std::make_pair(filepath,
-								 DynLib(filepath + ".so"))));
-                    }
-                }
-            }
-        }
-        ::closedir(dir);
-    }
+    ModuleManager::ModuleManager(LibManager &manager) : libManager(manager)
+    {}
 
     void ModuleManager::load(const std::string &name)
     {
-	using create_t = IModule *(*)();
-	DynLib &lib = modulesList.at(name).second;
-
-	lib.load();
-	create_t create = lib.resolve<create_t>("create");
-        this->modules.emplace_back(create());
-	Config config("conf/Zia.conf");
-	modules.back()->config(config.getConf());
+        using create_t = IModule *(*)();
+        DynLib &lib = this->libManager.modulesList.at(name).second;
+        std::string configFile = this->libManager.modulesList.at(name).first;
+        lib.load();
+        create_t create = lib.resolve<create_t>("create");
+        IModule *imodule = create();
+        imodule->config(Config(configFile).getConf());
+        this->modules.emplace_back(imodule);
     }
 
     void ModuleManager::process(HttpDuplex &duplex)

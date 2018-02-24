@@ -22,6 +22,7 @@ namespace zia::api {
     */
     struct ImplSocket {
         Stream stream;
+        bool isTLS;
     };
 
     /**

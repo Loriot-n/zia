@@ -8,26 +8,22 @@
 #include "api/Http.hpp"
 #include "IModule.hpp"
 #include "DynLib.hpp"
-#include "LibManager.hpp"
 #include "Config.hpp"
 
-using  zia::api::HttpDuplex;
-
+typedef struct dirent* t_dir;
 
 namespace zia
 {
-    class ModuleManager
+    class LibManager
     {
         public:
-            ModuleManager(LibManager &);
-            void load(const std::string&);
-            void process(HttpDuplex&);
-        private:
-            LibManager &libManager;
-            std::list<std::unique_ptr<IModule>> modules;
+            LibManager(const std::string &modulesDir);
+            static LibManager &getInstance(const Config &serverConfig);
             std::map<std::string, std::pair<std::string, DynLib>> modulesList;
+        private:
+            void getModulesList();
             std::string modulesDir;
-
             void readDir(const std::string &dirName);
+
     };
 }

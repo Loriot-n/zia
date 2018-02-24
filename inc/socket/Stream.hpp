@@ -20,11 +20,14 @@ namespace zia {
 
 			struct sockaddr_in getAddr() const { return _addr; }
 			void setAddr(struct sockaddr_in &addr) { _addr = addr; }
+			bool isTLS() const { return _isTLS; } 
+			void setTLS(bool isTLS) { _isTLS = isTLS; }
 
 			int recv(void* buf, size_t len, unsigned int timeout);
 			int send(const void* buf, size_t len) { return ::send(_socket, buf, len, 0); }
 
 		private:
+			bool _isTLS;
 			int _socket;
 			struct sockaddr_in _addr;
 	};

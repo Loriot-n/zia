@@ -43,9 +43,14 @@ debug: fclean ## Compile to debug mode
 	mkdir debug
 	# make -j -C default_module/
 	# cp default_module/response.so ./Modules/response/
-	make -C modules/Php-cgi
+	#make -C modules/Php-cgi
 	mv $(NAME) debug/
 
 re: fclean all ## Recompile
 
+%.o:		%.cpp
+		$(CXX) $(CXXFLAGS) -c $< -o $@ && echo "  CXX\t $(@F)"
+
 .PHONY: all re clean fclean help debug clean_comment
+
+.SILENT: all re clean fclean help debug clean_comment $(NAME) $(OBJS)

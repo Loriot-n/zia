@@ -123,11 +123,10 @@ void FileReader::handleFileError(fs::path const &target, zia::api::HttpDuplex &d
 <html>
 <head>
 <title>Object not found!</title>
-<link rev="made" href="mailto:you@example.com" />
 <style type="text/css"><!--/*--><![CDATA[/*><!--*/
 body { color: #000000; background-color: #FFFFFF; }
 a:link { color: #0000CC; }
-p, address {margin-left: 3em;}
+p {margin-left: 3em;}
 span {font-size: smaller;}
 /*]]>*/--></style>
 </head>
@@ -154,7 +153,6 @@ the <a href="mailto:you@example.com">webmaster</a>.
 </p>
 
 <h2>Error 404</h2>
-</address>
 </body>
 </html>
 
@@ -171,7 +169,6 @@ the <a href="mailto:you@example.com">webmaster</a>.
 <html>
 <head>
 <title>Access forbidden!</title>
-<link rev="made" href="mailto:you@example.com" />
 <style type="text/css"><!--/*--><![CDATA[/*><!--*/
 body { color: #000000; background-color: #FFFFFF; }
 a:link { color: #0000CC; }

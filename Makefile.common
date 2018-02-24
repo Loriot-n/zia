@@ -1,6 +1,9 @@
 CC	= g++
 RM	= rm -rf
 
+LDFLAGS		+= -ljsoncpp -ldl -lpthread
+CXXFLAGS	+= -W -Wall -Wextra -Iinc
+
 SRCS		= src/main.cpp \
 	src/Main.cpp \
 	src/Config.cpp \
@@ -12,4 +15,6 @@ SRCS		= src/main.cpp \
 	src/socket/Stream.cpp \
 	src/http/HttpParser.cpp \
 	src/Server.cpp \
-	src/DynLib.cpp
+	src/DynLib.cpp \
+	src/LibManager.cpp \
+	src/ModuleLog.cpp
