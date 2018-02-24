@@ -24,6 +24,10 @@ namespace zia
     void LibManager::readDir(const std::string &dirName)
     {
         DIR *dir = ::opendir(dirName.c_str());
+	if (dir == nullptr)
+	  {
+	    throw std::runtime_error("Couldn't open modules directory: " + dirName);
+	  }
         t_dir read;
         while((read = ::readdir(dir)) != nullptr)
         {

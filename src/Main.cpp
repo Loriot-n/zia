@@ -11,7 +11,7 @@ int Main::main(const int ac, const std::string *av)
 
     zia::Config config("./conf/Zia.conf");
 
-    try 
+    try
     {
       Server server(config);
       server.run([config](api::Net::Raw r, api::NetInfo netInfo) -> void
@@ -22,13 +22,13 @@ int Main::main(const int ac, const std::string *av)
           api::HttpDuplex duplex;
           duplex.info = netInfo;
           duplex.raw_req = r;
-          
+
 
           ModuleManager m1(LibManager::getInstance(config));
           if (netInfo.sock->isTLS)
           {
             //m1.load("ssl");
-            std::cout << "TLS Connection established" << std::endl;			
+            std::cout << "TLS Connection established" << std::endl;
           }
           //m1.load("httpParser");
           m1.load("file_reader");
@@ -37,10 +37,11 @@ int Main::main(const int ac, const std::string *av)
           ModuleManager m2(LibManager::getInstance(config));
           m2.load("response");
           m2.process(duplex);
+
       });
       return (0);
-    } 
-    catch (std::exception const &e) 
+    }
+    catch (std::exception const &e)
     {
       std::cerr << "err: " << e.what() << std::endl;
     }

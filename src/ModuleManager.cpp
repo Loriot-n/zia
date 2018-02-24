@@ -10,7 +10,7 @@ namespace zia
     {
         using create_t = IModule *(*)();
         DynLib &lib = this->libManager.modulesList.at(name).second;
-        std::string configFile = this->libManager.modulesList.at(name).first;
+        std::string const configFile = this->libManager.modulesList.at(name).first + ".conf";
         lib.load();
         create_t create = lib.resolve<create_t>("create");
         IModule *imodule = create();
