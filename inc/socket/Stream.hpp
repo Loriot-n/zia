@@ -9,8 +9,7 @@
 
 
 namespace zia {
-	class Stream
-	{
+	class Stream {
 		public:
 			~Stream();
 			Stream();

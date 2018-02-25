@@ -41,7 +41,7 @@ namespace zia {
 		tv.tv_sec = _timeout;
 		tv.tv_usec = 0;
 
-		setsockopt(_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval));
+		::setsockopt(_socket, SOL_SOCKET, SO_RCVTIMEO, (char *)&tv, sizeof(struct timeval));
 
 		//  acceptor_reactor_->register_handler(this->get_ptr());
 		_server->registerSock(shared_from_this());

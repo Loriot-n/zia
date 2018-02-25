@@ -9,6 +9,7 @@
 #include "Handler.hpp"
 #include "Stream.hpp"
 #include "Server.hpp"
+#include "http/HttpParser.hpp"
 
 #include "exception/TransferException.hpp"
 

@@ -24,7 +24,7 @@ namespace zia {
 			Server(api::Conf &c);
 			~Server();
 
-			bool run(Callback cb) override;
+			bool run(Callback) override;
 			bool send(api::ImplSocket *, const api::Net::Raw &) override;
 			bool stop() override;
 			static void handleRequest(Raw, api::NetInfo);

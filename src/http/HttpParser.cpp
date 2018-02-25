@@ -1,18 +1,26 @@
-#include "http/HttpParser.hpp"
+	#include "http/HttpParser.hpp"
 
 namespace zia {
 
 	HttpParser::HttpParser(api::Net::Raw &r) :
 	_raw(r)
 	{
-		_rawStr = reinterpret_cast<char *>(_raw.data());
-		_endMsg = reinterpret_cast<char *>(&_raw.back());
+		_rawStr = _raw.data();
+		_endMsg = &*endOfHeader(_raw);
+	}
+
+	api::Net::Raw::iterator HttpParser::endOfHeader(zia::api::Net::Raw &r) const {
+
+		std::byte seq[4] = { (std::byte)13, (std::byte)10, (std::byte)13, (std::byte)10 };
+		zia::api::Net::Raw eoh(seq, seq + sizeof(seq) / sizeof(std::byte));
+
+		return std::search(r.begin(), r.end(), eoh.begin(), eoh.end());
 	}
 
 	bool HttpParser::parseHeader(api::HttpRequest &req) {
 
-		const char *head = _rawStr;
-		const char *tail = _rawStr;
+		const char *head = reinterpret_cast<char *>(_rawStr);
+		const char *tail = reinterpret_cast<char *>(_rawStr);
 
 		// METHOD
 		while (tail != _endMsg && *tail != ' ') ++tail;
@@ -45,7 +53,9 @@ namespace zia {
 			}
 			const char *val = sep + 1;
 			while (val != tail && *val == ' ') ++val;
-			req.headers[std::string(head, sep)] = std::string(val, tail);
+			std::string headerKey(head, sep);
+			std::transform(headerKey.begin(), headerKey.end(), headerKey.begin(), ::toupper);
+			req.headers[headerKey] = std::string(val, tail);
 			head = tail + 2;
 			if (tail != _endMsg) ++tail; // Skip \r
 			if (tail != _endMsg) ++tail; // Skip \n

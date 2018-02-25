@@ -12,10 +12,10 @@ int Main::main(const int ac, const std::string *av)
     api::Conf c;
 
     try {
-      Server server(c);
-      return (server.run(server.handleRequest));
+        Server server(c);
+        return (server.run(server.handleRequest));
     } catch (std::exception const &e) {
-      std::cerr << "err: " << e.what() << std::endl;
+        std::cerr << "err: " << e.what() << std::endl;
     }
     return 1;
 }
