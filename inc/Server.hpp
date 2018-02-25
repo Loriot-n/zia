@@ -4,6 +4,7 @@
 #include <thread>
 #include <functional>
 #include <vector>
+#include <mutex>
 
 #include "api/Net.hpp"
 #include "api/Conf.hpp"
@@ -22,12 +23,14 @@ namespace zia {
 
 		public:
 
-			Server(Config &c);
+			Server(Config const &c);
 			~Server();
 
 			bool run(Callback) override;
 			bool send(api::ImplSocket *, const api::Net::Raw &) override;
 			bool stop() override;
+
+			void updateConfig(Config const &);
 			//static void handleRequest(Raw, api::NetInfo);
 
 		protected:
@@ -36,6 +39,7 @@ namespace zia {
 			long long _timeout;
 			long long _maxEv;
 			long long _threadPoolSize;
+			std::mutex _mutex;
 			api::HttpDuplex _duplex;
 
 	};
