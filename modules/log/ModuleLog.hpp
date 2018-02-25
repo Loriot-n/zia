@@ -1,5 +1,6 @@
 #pragma once
 
+#include "IModule.hpp"
 #include "api/Module.hpp"
 #include "api/Conf.hpp"
 #include "api/Http.hpp"
@@ -12,12 +13,12 @@ namespace zia {
 	
 	class ModuleLog : public IModule {
 	private:
-		ModuleLog() : IModule(0) {};
 
-		static std::string const _logName;
-		static std::ofstream _logFile;
+		std::string _logName;
+		std::ofstream _logFile;
 
 	public:
+		ModuleLog();
 		bool config(zia::api::Conf const &) override;
 		bool exec(zia::api::HttpDuplex &) override;
 	};

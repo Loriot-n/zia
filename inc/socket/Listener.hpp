@@ -22,7 +22,7 @@ namespace zia {
 		public:
 			Listener(const Listener &) = delete;
 			~Listener();
-			Listener& operator=( const Listener & ) = delete;
+			Listener& operator=(const Listener &) = delete;
 
 			static ListenerPtr create(
 				ReactorPtr listenerReactor,

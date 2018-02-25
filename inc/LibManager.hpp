@@ -5,6 +5,7 @@
 #include <iostream>
 #include <list>
 #include <memory>
+#include <mutex>
 #include "api/Http.hpp"
 #include "IModule.hpp"
 #include "DynLib.hpp"
@@ -17,13 +18,16 @@ namespace zia
     class LibManager
     {
         public:
-            LibManager(const std::string &modulesDir);
-            static LibManager &getInstance(const Config &serverConfig);
-            std::map<std::string, std::pair<std::string, DynLib>> modulesList;
+            static LibManager &getInstance();
+	    std::pair<std::string const, DynLib> &at(std::string const &key);
+            void loadModulesList(std::string const &modulesDir);
+
         private:
-            void getModulesList();
-            std::string modulesDir;
+            LibManager() = default;
             void readDir(const std::string &dirName);
 
+            std::string modulesDir;
+            std::map<std::string, std::pair<std::string const, DynLib>> modulesList;
+	    std::mutex mutex;
     };
 }

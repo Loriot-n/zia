@@ -8,6 +8,7 @@ DynLib::DynLib(std::string const &name)
 #endif
     name(name)
 {
+  std::cout << "DynLib: Loading '" << name << "'" << std::endl;
 }
 
 DynLib::DynLib(DynLib &&o)

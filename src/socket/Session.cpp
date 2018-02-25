@@ -25,39 +25,10 @@ namespace zia {
 		netInfo.ip.str = std::string(buf);
 		netInfo.port = clientaddr.sin_port;
 
-		_implSocket.stream = _stream;
+		_implSocket.stream = &_stream;
 		_implSocket.isTLS = _stream.isTLS();
 		netInfo.sock = &_implSocket;
 		return (0);
-	}
-
-	unsigned int Session::recv(api::Net::Raw &req) {
-
-		long pageSize = ::sysconf(_SC_PAGESIZE);
-		char buf[pageSize];
-		::bzero(buf, pageSize);
-		if (req.empty())
-			req.reserve(pageSize);
-
-		uint64_t totalRead = 0;
-
-		// THIS IS TEMPORARY
-		// Check for a \r\n\r\n in vector to check the end of headers	
-		while (1) {
-
-			int r = _stream.recv(buf, pageSize, _timeout);
-
-			// std::string header(buf, s);
-			// if header.find("Content-Length")
-
-			if (r <= 0) {
-				return totalRead;
-			}
-			req.insert(req.end(), (std::byte *)&buf[0], (std::byte *)&buf[r - 1]);
-			::bzero(buf, pageSize);
-			totalRead += r;
-		}
-		return totalRead;
 	}
 
 	SockState Session::handleInput(api::Net::Callback cb) {
@@ -66,9 +37,7 @@ namespace zia {
 		api::NetInfo  netinfo;
 
 		try {
-
 			getClientInfo(netinfo);
-			this->recv(r);
 
 		} catch (TransferException &e) {
 

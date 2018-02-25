@@ -75,6 +75,26 @@ namespace zia
 	}
     }
 
+    template <class T>
+    bool setIfNotSet(std::string const &key, T &&value)
+    {
+      auto valueIt = std::get_if<std::string>(&conf.at(key).v);
+      if (!valueIt)
+	{
+	  set(key, std::forward<T>(value));
+	  return true;
+	}
+      return false;
+    }
+
+    template <class T>
+    T getOrDefault(std::string const &key, T defaultValue) const
+    {
+      using It = api::ConfObject::const_iterator;
+      It result = conf.find(key);
+      return result == conf.end() ? defaultValue : std::get<T>(result->second.v);
+    }
+
     zia::api::ConfObject::iterator find(std::string const &name);
     void erase(zia::api::ConfObject::iterator it);
     zia::api::ConfObject::iterator end();

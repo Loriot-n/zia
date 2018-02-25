@@ -1,24 +1,28 @@
-    #include "LibManager.hpp"
+#include <iostream>
+#include "LibManager.hpp"
 
 namespace zia
 {
-    LibManager::LibManager(const std::string &modulesDir)
+    LibManager &LibManager::getInstance()
     {
-        this->modulesDir = modulesDir;
-        this->getModulesList();
-    }
-
-    LibManager &LibManager::getInstance(const Config &serverConfig)
-    {
-
-        static LibManager instance(serverConfig.get<std::string>("dirModule"));
+        static LibManager instance;
         return instance;
     }
 
-    void LibManager::getModulesList()
+    std::pair<std::string const, DynLib> &LibManager::at(std::string const &key)
     {
+	std::lock_guard<std::mutex> guard(mutex);
+
+	return modulesList.at(key);
+    }
+
+    void LibManager::loadModulesList(std::string const &modulesDir)
+    {
+	std::lock_guard<std::mutex> guard(mutex);
+
+	std::cout << "reloading module list with dir " << modulesDir << std::endl;
         this->modulesList.clear();
-        this->readDir(this->modulesDir);
+        this->readDir(modulesDir);
     }
 
     void LibManager::readDir(const std::string &dirName)
@@ -43,11 +47,11 @@ namespace zia
                     if (file.find(".so") != std::string::npos)
                     {
                         std::string const name = file.substr(0, file.length() - 3);
-                        std::cout << name << std::endl;
-			            std::string const filepath = dirName + "/" + name;
+                        std::cout << "found module : " << name << std::endl;
+			std::string const filepath = dirName + "/" + name;
                         this->modulesList.emplace(std::make_pair(name,
 								 std::make_pair(filepath,
-								 DynLib(filepath + ".so"))));
+										DynLib(filepath + ".so"))));
                     }
                 }
             }

@@ -13,10 +13,17 @@ extern "C" IModule *create()
 bool FileReader::exec(zia::api::HttpDuplex &dup)
 {
   std::cout << "-------\nFILE_READER MODULE: " << std::endl;
-  fs::path target = fs::path(rootPath) / fs::path(dup.req.uri);
+  fs::path const target = fs::path(rootPath) / fs::path(dup.req.uri);
   std::cout << "Requesting file " << target << std::endl;
   if (fs::is_directory(target))
     {
+      if (dup.req.uri.back() != '/')
+	{
+	  dup.resp.status = zia::api::http::common_status::moved_permanently;
+	  dup.resp.reason = "Moved Permanently";
+	  addHeader(dup, "Location", "http://localhost:8080" + dup.req.uri + "/");
+	  return false;
+	}
       handleDir(target, dup);
     }
   else

@@ -42,18 +42,22 @@ namespace zia
 
     void Config::load()
     {
-      Json::Value root;
-      Json::CharReaderBuilder builder;
-      std::string errs;
       std::ifstream file(filename);
 
-      if (Json::parseFromStream(builder, file, &root, &errs))
+      if (file)
 	{
-	  conf = getObjectFromJson(root);
-	}
-      else
-	{
-	  throw std::runtime_error(errs);
+	  Json::Value root;
+	  Json::CharReaderBuilder builder;
+	  std::string errs;
+
+	  if (Json::parseFromStream(builder, file, &root, &errs))
+	    {
+	      conf = getObjectFromJson(root);
+	    }
+	  else
+	    {
+	      throw std::runtime_error(errs);
+	    }
 	}
     }
 
@@ -76,7 +80,7 @@ namespace zia
     {
       return conf.end();
     }
-    
+
     api::ConfObject &Config::getConf()
     {
       return conf;

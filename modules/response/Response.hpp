@@ -19,13 +19,13 @@ private:
   template <class T>
   int sendRaw(T const &buffer, int size, zia::api::HttpDuplex &dup)
   {
-    return dup.info.sock->stream.send(buffer, size);
+    return dup.info.sock->stream->send(buffer, size);
   }
 
   template <class T>
   int sendContainer(T const &container, zia::api::HttpDuplex &dup)
   {
-    return dup.info.sock->stream.send(container.data(), container.size());
+    return dup.info.sock->stream->send(container.data(), container.size());
   }
 
   template<class Func>
