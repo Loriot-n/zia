@@ -45,6 +45,7 @@ int Main::main(const int ac, const std::string *av)
           }
 
           m1.load("request");
+          m1.load("log");
 
           //m1.load("httpParser");
           m1.load("file_reader");
