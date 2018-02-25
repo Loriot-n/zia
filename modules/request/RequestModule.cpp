@@ -32,9 +32,13 @@ namespace zia {
 		char buf[_pageSize];
 		::bzero(buf, _pageSize);
 
+
 		int read = _sock->stream->recv(buf, _pageSize, _timeout);
-		duplex.raw_req.insert(duplex.raw_req.end(),
-			(std::byte *)&buf[0], (std::byte *)&buf[read - 1]);
+		if (read != 0)
+		  {
+		    duplex.raw_req.insert(duplex.raw_req.end(),
+					  (std::byte *)&buf[0], (std::byte *)&buf[read - 1]);
+		  }
 
 		auto headerEnd = _endOfHeader(duplex.raw_req);
 		int dis = std::distance(headerEnd, duplex.raw_req.begin());

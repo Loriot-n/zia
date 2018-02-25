@@ -1,3 +1,4 @@
+#include <unistd.h>
 #include "Server.hpp"
 #include "ModuleManager.hpp"
 
