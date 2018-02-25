@@ -14,7 +14,7 @@ int Main::main(const int ac, const std::string *av)
     try
     {
       Server server(config);
-      server.run([config](api::Net::Raw r, api::NetInfo netInfo) -> void
+      server.run([&config](api::Net::Raw r, api::NetInfo netInfo) -> void
       {
           std::time_t tt = std::chrono::system_clock::to_time_t(netInfo.time);
           std::cout << "\n" << ctime(&tt) <<  "Request from " << netInfo.ip.str << ":" << netInfo.port << std::endl;

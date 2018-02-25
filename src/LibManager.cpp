@@ -15,8 +15,17 @@ namespace zia
         return instance;
     }
 
+    std::pair<std::string const, DynLib> &LibManager::at(std::string const &key)
+    {
+	std::lock_guard<std::mutex> guard(mutex);
+
+	return modulesList.at(key);
+    }
+
     void LibManager::getModulesList()
     {
+	std::lock_guard<std::mutex> guard(mutex);
+
         this->modulesList.clear();
         this->readDir(this->modulesDir);
     }
