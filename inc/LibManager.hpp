@@ -18,12 +18,12 @@ namespace zia
     class LibManager
     {
         public:
-            static LibManager &getInstance(const Config &serverConfig);
+            static LibManager &getInstance();
 	    std::pair<std::string const, DynLib> &at(std::string const &key);
+            void loadModulesList(std::string const &modulesDir);
 
         private:
-            LibManager(const std::string &modulesDir);
-            void getModulesList();
+            LibManager() = default;
             void readDir(const std::string &dirName);
 
             std::string modulesDir;

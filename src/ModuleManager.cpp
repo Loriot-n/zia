@@ -7,15 +7,22 @@ namespace zia
     {}
 
     void ModuleManager::load(const std::string &name)
-    {
-        using create_t = IModule *(*)();
-	std::pair<std::string const, DynLib> &libPair = libManager.at(name);
-        libPair.second.load();
-        create_t create = libPair.second.resolve<create_t>("create");
-        IModule *imodule = create();
-        imodule->config(Config(libPair.first).getConf());
-        this->modules.emplace_back(imodule);
-    }
+      {
+	using create_t = IModule *(*)();
+	try
+	  {
+	    std::pair<std::string const, DynLib> &libPair = libManager.at(name);
+	    libPair.second.load();
+	    create_t create = libPair.second.resolve<create_t>("create");
+	    IModule *imodule = create();
+	    imodule->config(Config(libPair.first + ".conf").getConf());
+	    this->modules.emplace_back(imodule);
+	  }
+	catch (std::out_of_range const &e)
+	  {
+	    std::cerr << "Module '" << name << "' not found" << std::endl;
+	  }
+      }
 
     void ModuleManager::process(HttpDuplex &duplex)
     {
