@@ -25,12 +25,30 @@ all: $(NAME) ## Compile
 $(NAME): $(OBJS)
 	$(CC) -o $(NAME) $(OBJS) $(LDFLAGS)
 
-clean: ## Clean .o
+clean: clean_modules ## Clean .o
 	$(RM) $(OBJS)
 
-fclean: clean ## Clean binary and .o
+fclean: fclean_modules clean ## Clean binary and .o
 	$(RM) $(NAME)
 	$(RM) debug
+
+modules:
+	$(MAKE) -C modules/request
+	$(MAKE) -C modules/file_reader
+	$(MAKE) -C modules/log
+	$(MAKE) -C modules/response
+
+clean_modules:
+	$(MAKE) clean -C modules/request
+	$(MAKE) clean -C modules/file_reader
+	$(MAKE) clean -C modules/log
+	$(MAKE) clean -C modules/response
+
+fclean_modules:
+	$(MAKE) fclean -C modules/request
+	$(MAKE) fclean -C modules/file_reader
+	$(MAKE) fclean -C modules/log
+	$(MAKE) fclean -C modules/response
 
 clean_comment: ## Clean all comment //
 	find -type f -name "*.cpp" | xargs sed -i 's://.*15451::g'
@@ -51,6 +69,6 @@ re: fclean all ## Recompile
 %.o:		%.cpp
 		$(CXX) $(CXXFLAGS) -c $< -o $@ && echo "  CXX\t $(@F)"
 
-.PHONY: all re clean fclean help debug clean_comment
+.PHONY: all re clean fclean help debug clean_comment modules
 
 .SILENT: all re clean fclean help debug clean_comment $(NAME) $(OBJS)
