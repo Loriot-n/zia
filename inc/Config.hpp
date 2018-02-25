@@ -50,6 +50,10 @@ namespace zia
   public:
     Config(std::string const &filename);
 
+    Config(api::Conf const &conf) : conf(conf)
+    {
+    }
+
     void load();
 
     template <class T>

@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include "FileReader.hpp"
+#include "Config.hpp"
 
 namespace fs = boost::filesystem;
 
@@ -35,13 +36,15 @@ bool FileReader::exec(zia::api::HttpDuplex &dup)
 
 bool FileReader::config(zia::api::Conf const &conf)
 {
-  auto root = std::get_if<std::string>(&conf.at("document_root").v);
-  if (root)
+  zia::Config config(conf);
+  rootPath = config.getOrDefault<std::string>("document_root", "/home/mobsil");
+  if (::access(rootPath.c_str(), R_OK) != 0)
     {
-      rootPath = *root;
-      return true;
+      throw std::runtime_error("Cannot read directory " + rootPath.native());
     }
-  return false;
+  path404 = config.getOrDefault<std::string>("404path", "");
+  path403 = config.getOrDefault<std::string>("403path", "");
+  return true;
 }
 
 
@@ -50,7 +53,8 @@ void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
   addHeader(dup, "Content-Type", "text/html");
   if (hasIndexHtml(target))
     {
-      return handleFile(target / "index.html", dup);
+      handleFile(target / "index.html", dup);
+      return;
     }
 
   std::stringstream top;
@@ -82,18 +86,18 @@ void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
       ss << "</a></td></tr>\r\n";
       putStringToResp(ss.str(), dup.resp);
     }
-  putStringToResp(
+  putStringToResp(std::string_view(
     R"|(
 </table>
 </body>
 </html>
-    )|",
+    )|"),
     dup.resp);
   dup.resp.status = zia::api::http::common_status::ok;
   dup.resp.reason = "OK";
 }
 
-void FileReader::handleFile(fs::path const &target, zia::api::HttpDuplex &dup)
+bool FileReader::handleFile(fs::path const &target, zia::api::HttpDuplex &dup)
 {
   if (fs::ifstream inputStream{target, std::ios::binary})
     {
@@ -102,10 +106,12 @@ void FileReader::handleFile(fs::path const &target, zia::api::HttpDuplex &dup)
       inputStream.read(reinterpret_cast<char *>(dup.resp.body.data()), size);
       dup.resp.status = zia::api::http::common_status::ok;
       dup.resp.reason = "OK";
+      return true;
     }
   else
     {
       handleFileError(target, dup);
+      return false;
     }
 }
 
@@ -123,68 +129,18 @@ void FileReader::handleFileError(fs::path const &target, zia::api::HttpDuplex &d
 {
   if (!fs::exists(target))
     {
+      if (handleFile(rootPath / path404, dup) == false)
+	putStringToResp(FileReader::html404, dup.resp);
       dup.resp.status = zia::api::http::common_status::not_found;
       dup.resp.reason = "Not Found";
-      putStringToResp(std::string_view(R"|(
-<!DOCTYPE html>
-<html>
-<head>
-<title>Object not found!</title>
-<style type="text/css"><!--/*--><![CDATA[/*><!--*/
-body { color: #000000; background-color: #FFFFFF; }
-a:link { color: #0000CC; }
-p {margin-left: 3em;}
-span {font-size: smaller;}
-/*]]>*/--></style>
-</head>
-<body>
-<h1>Object not found!</h1>
-<p>
-The requested URL was not found on this server.
-If you entered the URL manually please check your
-spelling and try again.
-</p>
-<p>
-If you think this is a server error, please contact
-the <a href="mailto:you@example.com">webmaster</a>.
-</p>
-<h2>Error 404</h2>
-</body>
-</html>
-
-)|"),
-      dup.resp);
     }
   else
     {
       fs::file_status file = fs::status(target);
       if (!(file.permissions() & fs::owner_read))
 	{
-	  putStringToResp(std::string_view(R"|(
-<!DOCTYPE html>
-<html>
-<head>
-<title>Access forbidden!</title>
-<style type="text/css"><!--/*--><![CDATA[/*><!--*/
-body { color: #000000; background-color: #FFFFFF; }
-a:link { color: #0000CC; }
-p, address {margin-left: 3em;}
-span {font-size: smaller;}
-/*]]>*/--></style>
-</head>
-<body>
-<h1>Access forbidden!</h1>
-<p>
-You don't have permission to access the requested object.
-It is either read-protected or not readable by the server.
-</p>
-<p>
-If you think this is a server error, please contact
-the <a href="mailto:you@example.com">webmaster</a>.
-</p>
-<h2>Error 403</h2>
-</body>)|"),
-	  dup.resp);
+	  if (handleFile(rootPath / path403, dup) == false)
+	    putStringToResp(FileReader::html403, dup.resp);
 	  dup.resp.status = zia::api::http::common_status::forbidden;
 	  dup.resp.reason = "Forbidden";
 	}
