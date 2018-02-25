@@ -38,7 +38,7 @@ int Response::sendBody(zia::api::HttpDuplex &dup)
 {
   std::cout.write(reinterpret_cast<char const *>(dup.resp.body.data()), dup.resp.body.size());
   std::cout << "\r\n\r\n" << std::endl;
-  return dup.info.sock->stream.send(dup.resp.body.data(), dup.resp.body.size())
+  return dup.info.sock->stream->send(dup.resp.body.data(), dup.resp.body.size())
     + sendContainer(std::string_view("\r\n\r\n"), dup);
 }
 

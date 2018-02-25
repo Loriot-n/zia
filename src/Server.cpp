@@ -1,5 +1,4 @@
 #include "Server.hpp"
-#include "http/HttpParser.hpp"
 #include "ModuleManager.hpp"
 
 namespace zia {

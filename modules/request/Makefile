@@ -1,5 +1,3 @@
-.SILENT:
-
 CC	= g++
 
 DEBUG	?= 0
@@ -11,6 +9,7 @@ LDFLAGS	+= -shared
 CXXFLAGS += -W -Wall -I../../inc -fPIC -rdynamic -std=c++17
 
 SRCS	= 	RequestModule.cpp \
+			HttpParser.cpp
 
 OBJS	= $(SRCS:.cpp=.o)
 

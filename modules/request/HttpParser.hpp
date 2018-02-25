@@ -1,11 +1,11 @@
 #pragma once
 
-#include "Server.hpp"
 #include "api/Http.hpp"
 #include "exception/ProtocolException.hpp"
 
 #include <algorithm>
 #include <sstream>
+#include <string.h>
 
 
 namespace zia {

@@ -3,7 +3,7 @@
 
 namespace zia {
 
-	RequestModule::RequestModule() : IModule(5)
+	RequestModule::RequestModule() : IModule(6)
 	{
 	    std::cout << "Initializing RequestModule" << std::endl;
 		_pageSize = ::sysconf(_SC_PAGESIZE);
@@ -32,7 +32,7 @@ namespace zia {
 		char buf[_pageSize];
 		::bzero(buf, _pageSize);
 
-		int read = _sock->stream.recv(buf, _pageSize, _timeout);
+		int read = _sock->stream->recv(buf, _pageSize, _timeout);
 		duplex.raw_req.insert(duplex.raw_req.end(),
 			(std::byte *)&buf[0], (std::byte *)&buf[read - 1]);
 
@@ -45,8 +45,8 @@ namespace zia {
 			return false;
 		}
 
-		HttpParser p(duplex.raw_req);
-		p.parse(duplex.req);
+		HttpParser *p = new HttpParser(duplex.raw_req);
+		p->parse(duplex.req);
 
 		if (headerEnd == duplex.raw_req.end())
 			return true;
@@ -82,7 +82,7 @@ namespace zia {
 
 		while (1) {
 
-			int read = _sock->stream.recv(buf, _pageSize, _timeout);
+			int read = _sock->stream->recv(buf, _pageSize, _timeout);
 			duplex.raw_req.insert(duplex.raw_req.end(),
 				(std::byte *)&buf[0], (std::byte *)&buf[read - 1]);
 

@@ -25,7 +25,7 @@ namespace zia {
 		netInfo.ip.str = std::string(buf);
 		netInfo.port = clientaddr.sin_port;
 
-		_implSocket.stream = _stream;
+		_implSocket.stream = &_stream;
 		_implSocket.isTLS = _stream.isTLS();
 		netInfo.sock = &_implSocket;
 		return (0);
