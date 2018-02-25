@@ -8,6 +8,7 @@
 #include "api/Net.hpp"
 #include "api/Conf.hpp"
 #include "api/Http.hpp"
+#include "Config.hpp"
 
 
 #include "socket/Reactor.hpp"
@@ -21,13 +22,13 @@ namespace zia {
 
 		public:
 
-			Server(api::Conf &c);
+			Server(Config &c);
 			~Server();
 
 			bool run(Callback) override;
 			bool send(api::ImplSocket *, const api::Net::Raw &) override;
 			bool stop() override;
-			static void handleRequest(Raw, api::NetInfo);
+			//static void handleRequest(Raw, api::NetInfo);
 
 		protected:
 			long long _port;

@@ -18,9 +18,4 @@ namespace zia {
 
 		return ::recv(_socket, buf, len, 0);
 	}
-
-	int Stream::send(const void* buf, size_t len)
-	{
-		return ::send(_socket, buf, len, 0);
-	}
 }

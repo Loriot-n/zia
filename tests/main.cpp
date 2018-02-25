@@ -1,7 +1,6 @@
 #include "gtest/gtest.h"
 
-TEST(TestGroup, NameOfTest) {
-	//do something
+TEST(TestGroup, TestName) {
 }
 
 int main(int ac, char **av) {
