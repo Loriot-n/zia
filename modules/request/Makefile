@@ -8,9 +8,9 @@ RM	= rm -rf
 
 LDFLAGS	+= -shared
 
-CXXFLAGS += -W -Wall -Iinc -I../inc -fPIC -rdynamic -std=c++17
+CXXFLAGS += -W -Wall -I../../inc -fPIC -rdynamic -std=c++17
 
-SRCS	= 	src/RequestModule.cpp \
+SRCS	= 	RequestModule.cpp \
 
 OBJS	= $(SRCS:.cpp=.o)
 

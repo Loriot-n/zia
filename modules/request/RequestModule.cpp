@@ -1,6 +1,4 @@
-#include <iostream>
-
-#include "../request_module/inc/RequestModule.hpp"
+#include "RequestModule.hpp"
 
 
 namespace zia {
