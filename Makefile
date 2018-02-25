@@ -37,18 +37,21 @@ modules:
 	$(MAKE) -C modules/file_reader
 	$(MAKE) -C modules/log
 	$(MAKE) -C modules/response
+	$(MAKE) -C modules/cgi
 
 clean_modules:
 	$(MAKE) clean -C modules/request
 	$(MAKE) clean -C modules/file_reader
 	$(MAKE) clean -C modules/log
 	$(MAKE) clean -C modules/response
+	$(MAKE) clean -C modules/cgi
 
 fclean_modules:
 	$(MAKE) fclean -C modules/request
 	$(MAKE) fclean -C modules/file_reader
 	$(MAKE) fclean -C modules/log
 	$(MAKE) fclean -C modules/response
+	$(MAKE) fclean -C modules/cgi
 
 clean_comment: ## Clean all comment //
 	find -type f -name "*.cpp" | xargs sed -i 's://.*15451::g'

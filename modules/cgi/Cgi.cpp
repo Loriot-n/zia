@@ -8,6 +8,7 @@ namespace zia {
 	}
 
 	bool Cgi::config(const api::Conf &c) {
+		(void)c;
 		return true;
 	}
 
