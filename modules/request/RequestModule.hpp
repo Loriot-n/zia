@@ -8,7 +8,7 @@
 #include "api/Http.hpp"
 #include "api/Net.hpp"
 
-#include "http/HttpParser.hpp"
+#include "HttpParser.hpp"
 
 #include "exception/ServerException.hpp"
 
