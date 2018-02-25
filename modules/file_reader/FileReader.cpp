@@ -16,6 +16,13 @@ bool FileReader::exec(zia::api::HttpDuplex &dup)
   std::cout << "-------\nFILE_READER MODULE: " << std::endl;
   fs::path const target = fs::path(rootPath) / fs::path(dup.req.uri);
   std::cout << "Requesting file " << target << std::endl;
+  std::cout << "chach" << std::endl;
+  if (!fs::exists(target))
+    {
+      std::cout << "nexiste pas" << std::endl;
+      send404(dup);
+      return false;
+    }
   if (fs::is_directory(target))
     {
       if (dup.req.uri.back() != '/')
@@ -29,7 +36,8 @@ bool FileReader::exec(zia::api::HttpDuplex &dup)
     }
   else
     {
-      handleFile(target, dup);
+      if (handleFile(target, dup) == false)
+	handleFileError(target, dup);
     }
   return true;
 }
@@ -47,13 +55,13 @@ bool FileReader::config(zia::api::Conf const &conf)
   return true;
 }
 
-
-void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
+void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup) const
 {
   addHeader(dup, "Content-Type", "text/html");
   if (hasIndexHtml(target))
     {
-      handleFile(target / "index.html", dup);
+      if (handleFile(target, dup) == false)
+	handleFileError(target, dup);
       return;
     }
 
@@ -97,7 +105,7 @@ void FileReader::handleDir(fs::path const &target, zia::api::HttpDuplex &dup)
   dup.resp.reason = "OK";
 }
 
-bool FileReader::handleFile(fs::path const &target, zia::api::HttpDuplex &dup)
+bool FileReader::handleFile(fs::path const &target, zia::api::HttpDuplex &dup) const
 {
   if (fs::ifstream inputStream{target, std::ios::binary})
     {
@@ -110,7 +118,6 @@ bool FileReader::handleFile(fs::path const &target, zia::api::HttpDuplex &dup)
     }
   else
     {
-      handleFileError(target, dup);
       return false;
     }
 }
@@ -125,42 +132,58 @@ bool FileReader::hasIndexHtml(boost::filesystem::path const &targetDir) const
   return false;
 }
 
-void FileReader::handleFileError(fs::path const &target, zia::api::HttpDuplex &dup)
+void FileReader::handleFileError(fs::path const &target, zia::api::HttpDuplex &dup) const
 {
   if (!fs::exists(target))
     {
-      if (handleFile(rootPath / path404, dup) == false)
-	putStringToResp(FileReader::html404, dup.resp);
-      dup.resp.status = zia::api::http::common_status::not_found;
-      dup.resp.reason = "Not Found";
+      send404(dup);
     }
   else
     {
       fs::file_status file = fs::status(target);
       if (!(file.permissions() & fs::owner_read))
 	{
-	  if (handleFile(rootPath / path403, dup) == false)
-	    putStringToResp(FileReader::html403, dup.resp);
-	  dup.resp.status = zia::api::http::common_status::forbidden;
-	  dup.resp.reason = "Forbidden";
+	  send403(dup);
 	}
     }
 }
 
-void FileReader::putStringToResp(std::string_view str, zia::api::HttpResponse &resp)
+void FileReader::send404(zia::api::HttpDuplex &dup) const
+{
+  if (fs::path const full404path = rootPath / path404;
+      handleFile(full404path, dup) == false)
+    {
+      putStringToResp(FileReader::html404, dup.resp);
+    }
+  dup.resp.status = zia::api::http::common_status::not_found;
+  dup.resp.reason = "Not Found";
+}
+
+void FileReader::send403(zia::api::HttpDuplex &dup) const
+{
+  if (fs::path const full403path = rootPath / path403;
+      handleFile(full403path, dup) == false)
+    {
+      putStringToResp(FileReader::html403, dup.resp);
+    }
+  dup.resp.status = zia::api::http::common_status::forbidden;
+  dup.resp.reason = "Forbidden";
+}
+
+void FileReader::putStringToResp(std::string_view str, zia::api::HttpResponse &resp) const
 {
   std::byte const *bytes = reinterpret_cast<std::byte const *>(str.data());
   resp.body.insert(resp.body.end(), bytes, bytes + str.size());
 }
 
-void FileReader::putStringToResp(std::string const &str, zia::api::HttpResponse &resp)
+void FileReader::putStringToResp(std::string const &str, zia::api::HttpResponse &resp) const
 {
   std::byte const *bytes = reinterpret_cast<std::byte const *>(str.c_str());
   resp.body.insert(resp.body.end(), bytes, bytes + str.size());
 }
 
 void FileReader::addHeader(zia::api::HttpDuplex &dup,
-			   std::string const &key, std::string const &value)
+			   std::string const &key, std::string const &value) const
 {
   dup.resp.headers.emplace(std::make_pair(key, value));
 }

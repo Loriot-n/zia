@@ -20,14 +20,17 @@ private:
   fs::path path404;
   fs::path path403;
 
-  void handleDir(fs::path const &target, zia::api::HttpDuplex &);
-  bool handleFile(fs::path const &target, zia::api::HttpDuplex &);
+  void handleDir(fs::path const &target, zia::api::HttpDuplex &) const;
+  bool handleFile(fs::path const &target, zia::api::HttpDuplex &) const;
   bool hasIndexHtml(fs::path const &targetDir) const;
-  void handleFileError(fs::path const &target, zia::api::HttpDuplex &);
+  void handleFileError(fs::path const &target, zia::api::HttpDuplex &) const;
 
-  void putStringToResp(std::string const &, zia::api::HttpResponse &);
-  void putStringToResp(std::string_view, zia::api::HttpResponse &);
-  void addHeader(zia::api::HttpDuplex &, std::string const &key, std::string const &value);
+  void send404(zia::api::HttpDuplex &) const;
+  void send403(zia::api::HttpDuplex &) const;
+
+  void putStringToResp(std::string const &, zia::api::HttpResponse &) const;
+  void putStringToResp(std::string_view, zia::api::HttpResponse &) const;
+  void addHeader(zia::api::HttpDuplex &, std::string const &key, std::string const &value) const;
 
   static constexpr std::string_view const html404 = R"|(
 <!DOCTYPE html>

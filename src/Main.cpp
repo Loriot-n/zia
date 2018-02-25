@@ -60,15 +60,16 @@ int Main::main(const int ac, const std::string *av)
 
 
 	  } catch (std::exception const &e) {
-	    std::cerr << "Callback error : " << e.what() << std::endl;
-	    std::cerr << "Responding 503" << std::endl;
+	      std::cerr << "Callback error : " << e.what() << std::endl;
+	      std::cerr << "Responding 503" << std::endl;
 
-	    ModuleManager m(libManager);
-	    HttpDuplex duplex;
-	    duplex.resp.status = zia::api::http::common_status::service_unavailable;
-	    duplex.resp.reason = "Service Unavailable";
-	    m.load("response");
-	    m.process(duplex);
+	      ModuleManager m(libManager);
+	      HttpDuplex duplex;
+	      duplex.resp.status = zia::api::http::common_status::service_unavailable;
+	      duplex.resp.reason = "Service Unavailable";
+	      duplex.resp.body.push_back(std::byte('a'));
+	      m.load("response");
+	      m.process(duplex);
 	  }
       });
       return (0);

@@ -6,7 +6,7 @@ RM	= rm -rf
 
 LDFLAGS	+= -shared -lboost_filesystem
 
-CXXFLAGS += -W -Wall -std=c++17 -fPIC  -rdynamic -I ../../inc
+CXXFLAGS += -W -Wall -std=c++17 -fPIC  -rdynamic -I ../../inc -g3
 
 ifeq ($(DEBUG), 1)
 	CXXFLAGS+= -DDEBUG -g3
