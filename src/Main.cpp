@@ -16,7 +16,7 @@ int Main::main(const int ac, const std::string *av)
 
     try
     {
-      std::signal(SIGUSR1, [](int signal) { if (signal == SIGUSR1) { reloadLibs = 1; std::cout << "setting reload libs to 1" << std::endl; }});
+      std::signal(SIGUSR1, [](int signal) { if (signal == SIGUSR1) { reloadLibs.store(1); std::cout << "setting reload libs to 1" << std::endl; }});
 
       zia::Config config("./conf/Zia.conf");
       Server server(config);
