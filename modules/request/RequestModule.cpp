@@ -45,8 +45,8 @@ namespace zia {
 			return false;
 		}
 
-		HttpParser *p = new HttpParser(duplex.raw_req);
-		p->parse(duplex.req);
+		HttpParser p(duplex.raw_req);
+		p.parse(duplex.req);
 
 		if (headerEnd == duplex.raw_req.end())
 			return true;
