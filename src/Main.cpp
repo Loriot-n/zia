@@ -15,6 +15,7 @@ int Main::main(const int ac, const std::string *av)
 
     try
     {
+      std::signal(SIGPIPE, SIG_IGN);
       std::signal(SIGUSR1, [](int signal) { if (signal == SIGUSR1) { reloadLibs.store(1); std::cout << "setting reload libs to 1" << std::endl; }});
 
       zia::Config config("./conf/Zia.conf");
@@ -67,7 +68,6 @@ int Main::main(const int ac, const std::string *av)
 	      HttpDuplex duplex;
 	      duplex.resp.status = zia::api::http::common_status::service_unavailable;
 	      duplex.resp.reason = "Service Unavailable";
-	      duplex.resp.body.push_back(std::byte('a'));
 	      m.load("response");
 	      m.process(duplex);
 	  }

@@ -26,6 +26,8 @@ namespace zia {
 		while (tail != _endMsg && *tail != ' ') ++tail;
 		std::string method(head, tail);
 		req.method = getMethod(method);
+		if (req.method == api::http::Method::unknown)
+		  throw std::runtime_error("Unknown http method");
 
 		// URI / PATH
 		while (tail != _endMsg && *tail == ' ') ++tail;
@@ -86,7 +88,6 @@ namespace zia {
 			res = api::http::Method::connect;
 		else
 			res = api::http::Method::unknown;
-
 		return res;
 	}
 
