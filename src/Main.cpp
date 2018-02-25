@@ -20,7 +20,7 @@ int Main::main(const int ac, const std::string *av)
       zia::Config config("./conf/Zia.conf");
       Server server(config);
       LibManager &libManager = LibManager::getInstance();
-      libManager.loadModulesList(config.get<std::string>("dirModule"));
+      libManager.loadModulesList(config.getOrDefault<std::string>("dirModule", "modules"));
       server.run([&server, &libManager](api::Net::Raw r, api::NetInfo netInfo) -> void
       {
 	  try {
@@ -36,7 +36,7 @@ int Main::main(const int ac, const std::string *av)
 	    std::cout << "reload libs : " << reloadLibs.load() << std::endl;
 	    if (reloadLibs.load() != 0)
 	    {
-	      libManager.loadModulesList(newConfig.get<std::string>("dirModule"));
+	    libManager.loadModulesList(newConfig.getOrDefault<std::string>("dirModule", "modules"));
 	      reloadLibs.store(0);
 	    }
 
