@@ -22,7 +22,7 @@ int Main::main(const int ac, const std::string *av)
       Server server(config);
       LibManager &libManager = LibManager::getInstance();
       libManager.loadModulesList(config.get<std::string>("dirModule"));
-      server.run([&config, &libManager](api::Net::Raw r, api::NetInfo netInfo) -> void
+      server.run([&server, &libManager](api::Net::Raw r, api::NetInfo netInfo) -> void
       {
           std::time_t tt = std::chrono::system_clock::to_time_t(netInfo.time);
           std::cout << "\n" << ctime(&tt) <<  "Request from " << netInfo.ip.str << ":" << netInfo.port << std::endl;
@@ -31,10 +31,12 @@ int Main::main(const int ac, const std::string *av)
           duplex.info = netInfo;
           duplex.raw_req = r;
 
+	  Config newConfig("./conf/Zia.conf");
+	  server.updateConfig(newConfig);
 	  std::cout << "reload libs : " << reloadLibs.load() << std::endl;
 	  if (reloadLibs.load() != 0)
 	    {
-	      libManager.loadModulesList(config.get<std::string>("dirModule"));
+	      libManager.loadModulesList(newConfig.get<std::string>("dirModule"));
 	      reloadLibs.store(0);
 	    }
 

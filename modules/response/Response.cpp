@@ -18,7 +18,7 @@ int Response::sendStatusLine(zia::api::HttpDuplex &dup)
 int Response::sendHeaders(zia::api::HttpDuplex &dup)
 {
   int size_sent = 0;
-  for (std::pair<std::string, std::string> &&header : dup.resp.headers)
+  for (std::pair<std::string, std::string> const &header : dup.resp.headers)
     {
       std::stringstream ss;
       ss << header.first << ": " << header.second;

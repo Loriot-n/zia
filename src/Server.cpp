@@ -5,15 +5,8 @@
 namespace zia {
 
 
-	Server::Server(Config &c) {
-
-		// TODO: Get conf value
-		(void)c;
-		_port = 4242;
-		_sslPort = 4343;
-		_timeout = 1;
-		_threadPoolSize = std::thread::hardware_concurrency();
-		_maxEv = 256;
+	Server::Server(Config const &conf) {
+		updateConfig(conf);
 	}
 
 	Server::~Server() {
@@ -85,5 +78,15 @@ namespace zia {
 
 	bool Server::stop() {
 		return true;
+	}
+
+	void Server::updateConfig(Config const &conf) {
+	  std::lock_guard<std::mutex> lock(_mutex);
+
+	  _port = conf.getOrDefault<long long>("port", 4242);
+	  _sslPort = conf.getOrDefault<long long>("ssl_port", 4243);
+	  _timeout = conf.getOrDefault<long long>("timeout", 1);
+	  _threadPoolSize = conf.getOrDefault<long long>("threadpool_size", std::thread::hardware_concurrency());
+	  _maxEv = conf.getOrDefault<long long>("max_ev", 256);
 	}
 }
