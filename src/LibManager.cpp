@@ -20,6 +20,7 @@ namespace zia
     {
 	std::lock_guard<std::mutex> guard(mutex);
 
+	std::cout << "reloading module list with dir " << modulesDir << std::endl;
         this->modulesList.clear();
         this->readDir(modulesDir);
     }
@@ -47,10 +48,10 @@ namespace zia
                     {
                         std::string const name = file.substr(0, file.length() - 3);
                         std::cout << "found module : " << name << std::endl;
-			            std::string const filepath = dirName + "/" + name;
+			std::string const filepath = dirName + "/" + name;
                         this->modulesList.emplace(std::make_pair(name,
 								 std::make_pair(filepath,
-								 DynLib(filepath + ".so"))));
+										DynLib(filepath + ".so"))));
                     }
                 }
             }
